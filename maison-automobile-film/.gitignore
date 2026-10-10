@@ -1,0 +1,4 @@
+node_modules
+out/*
+!out/maison-automobile-launch-film-v1.mp4
+!out/contact-sheet-v1.png
