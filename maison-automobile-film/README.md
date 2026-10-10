@@ -127,7 +127,7 @@ Le script tient en peu de mots, avec des phrases nominales. Il est calé sur l'i
 | 12,7 s | On coordonne. | « ON COORDONNE. » (f386) |
 | 14,5 s | Vous prenez les clés. | chute de la clé (f436) |
 | 16,0 s | Partout au Québec. | tracé de la province (f480) |
-| 18,5 s | Selon votre lieu et votre horaire. | texte en graisse légère (f560) |
+| 17,7 s | Remise coordonnée, selon votre lieu et votre horaire. | panneau « Remise coordonnée » (f531) |
 | 21,5 s | Maison Automobile. | coup de marque (f645) |
 | 23,1 s | Votre voiture. Là où vous en avez besoin. | signature (f693) |
 

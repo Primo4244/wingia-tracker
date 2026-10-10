@@ -14,7 +14,7 @@ export const VO_LINES: Array<{file: string; at: number; text: string}> = [
 	{file: '07.mp3', at: 381, text: 'On coordonne.'},
 	{file: '08.mp3', at: 435, text: 'Vous prenez les clés.'},
 	{file: '09.mp3', at: 480, text: 'Partout au Québec.'},
-	{file: '10.mp3', at: 555, text: 'Selon votre lieu et votre horaire.'},
+	{file: '10.mp3', at: 531, text: 'Remise coordonnée, selon votre lieu et votre horaire.'},
 	{file: '11.mp3', at: 645, text: 'Maison Automobile.'},
 	{file: '12.mp3', at: 693, text: 'Votre voiture. Là où vous en avez besoin.'},
 ];
