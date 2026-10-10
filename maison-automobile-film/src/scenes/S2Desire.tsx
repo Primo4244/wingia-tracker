@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {Glass} from '../components/Glass';
+import {GlassLabel} from '../components/Glass';
 import {MaskRise} from '../components/KineticText';
 import {Vehicle} from '../components/Vehicle';
 import {keys, ramp} from '../lib/anim';
@@ -34,44 +34,22 @@ const Reveal: React.FC<{f: number}> = ({f}) => {
 					background: `radial-gradient(70% 28% at 50% ${Y_LINE + 110}px, rgba(255,255,255,${0.07 * lit}) 0%, rgba(0,0,0,0) 70%)`,
 				}}
 			/>
-			{/* glass behind the headline pair — the car body still passes over it */}
-			<Glass left={40} top={744} width={640} height={226} radius={56} shine={ramp(f, [0, A_END], [0, 1])} opacity={ramp(f, [20, 32])} />
-			<Glass left={20} top={968} width={1040} height={230} radius={56} shine={ramp(f, [0, A_END], [0, 1])} opacity={ramp(f, [8, 16])} />
-			{/* VOITURE — sits behind the car body */}
-			<div
-				style={{
-					position: 'absolute',
-					left: 0,
-					right: 0,
-					top: 985,
-					textAlign: 'center',
-					...wide(112, 840),
-					fontSize: 176,
-					lineHeight: 1,
-					color: C.bone,
-					letterSpacing: `${(1 - textIn) * 0.5 - 0.02}em`,
-					opacity: ramp(f, [8, 14]),
-					transform: `translateX(${18 - f * 0.45}px)`,
-					whiteSpace: 'nowrap',
-				}}
+			{/* headline pair on one glass panel — the car body passes over its lower edge */}
+			<GlassLabel
+				top={700}
+				padding="34px 70px 30px"
+				radius={60}
+				shine={ramp(f, [0, A_END], [0, 1])}
+				opacity={ramp(f, [6, 14])}
+				transform={`translateX(${-f * 0.25}px)`}
 			>
-				VOITURE
-			</div>
-			<div
-				style={{
-					position: 'absolute',
-					left: 72,
-					top: 770,
-					fontFamily: F.serif,
-					fontWeight: 300,
-					fontSize: 168,
-					lineHeight: 1,
-					color: C.copper,
-					transform: `translateX(${-f * 0.25}px)`,
-				}}
-			>
-				<MaskRise text="la bonne" frame={f} start={22} dur={16} stagger={1.2} />
-			</div>
+				<div style={{fontFamily: F.serif, fontWeight: 300, fontSize: 120, lineHeight: 1.05, color: C.stone}}>
+					<MaskRise text="la bonne" frame={f} start={22} dur={16} stagger={1.2} />
+				</div>
+				<div style={{...wide(112, 840), fontSize: 176, lineHeight: 1, letterSpacing: '-0.03em', color: C.bone, opacity: textIn}}>
+					<MaskRise text="VOITURE" frame={f} start={8} dur={14} stagger={1.4} />
+				</div>
+			</GlassLabel>
 
 			{/* the light line from the hook, collapsing into the contour */}
 			<div
@@ -162,7 +140,7 @@ const Fleet: React.FC<{f: number}> = ({f}) => {
 						style={{
 							position: 'absolute',
 							left: b.x(f),
-							top: isMid ? B2_TOP - top : i === 0 ? 262 : 320 - (b.width * 0.4) / 2 - 10,
+							top: isMid ? B2_TOP - top : i === 0 ? 262 : 250,
 							transform: b.flip ? 'scaleX(-1)' : undefined,
 						}}
 					>
@@ -245,35 +223,17 @@ const Fleet: React.FC<{f: number}> = ({f}) => {
 					}}
 				/>
 			))}
-			{/* copy — on glass */}
-			<Glass left={40} top={206 - 660 * collapse} width={960} height={156} radius={56} shine={ramp(f, [A_END, 150], [0, 1])} opacity={ramp(f, [84, 96])} />
-			<Glass left={320} top={1290 + 660 * collapse} width={720} height={156} radius={56} shine={ramp(f, [A_END, 150], [0, 1])} opacity={ramp(f, [102, 114])} />
-			<div
-				style={{
-					position: 'absolute',
-					left: 70,
-					top: 236 - 660 * collapse,
-					...wide(100, 820),
-					fontSize: 96,
-					letterSpacing: '-0.02em',
-					color: C.bone,
-				}}
-			>
-				<MaskRise text="DE L'ACCESSIBLE" frame={f} start={86} dur={12} stagger={0.9} />
-			</div>
-			<div
-				style={{
-					position: 'absolute',
-					right: 70,
-					top: 1316 + 660 * collapse,
-					...wide(100, 820),
-					fontSize: 96,
-					letterSpacing: '-0.02em',
-					color: C.bone,
-				}}
-			>
-				<MaskRise text="AU PREMIUM." frame={f} start={104} dur={12} stagger={0.9} from={-110} />
-			</div>
+			{/* copy — on glass, at the top of its band, clear of the cars */}
+			<GlassLabel top={70 - 660 * collapse} padding="22px 46px" shine={ramp(f, [A_END, 150], [0, 1])} opacity={ramp(f, [84, 96])}>
+				<div style={{...wide(100, 820), fontSize: 88, lineHeight: 1, letterSpacing: '-0.02em', color: C.bone}}>
+					<MaskRise text="DE L'ACCESSIBLE" frame={f} start={86} dur={12} stagger={0.9} />
+				</div>
+			</GlassLabel>
+			<GlassLabel top={1312 + 660 * collapse} padding="22px 46px" shine={ramp(f, [A_END, 150], [0, 1])} opacity={ramp(f, [102, 114])}>
+				<div style={{...wide(100, 820), fontSize: 88, lineHeight: 1, letterSpacing: '-0.02em', color: C.bone}}>
+					<MaskRise text="AU PREMIUM." frame={f} start={104} dur={12} stagger={0.9} from={-110} />
+				</div>
+			</GlassLabel>
 		</AbsoluteFill>
 	);
 };
@@ -342,45 +302,27 @@ const Dial: React.FC<{f: number}> = ({f}) => {
 					</g>
 				)}
 			</svg>
-			<Glass left={70} top={226} width={940} height={172} radius={56} shine={ramp(f, [176, 226], [0, 1])} opacity={ramp(f, [182, 188])} />
-			{/* SÉLECTIONNÉE. — tracking compress */}
-			<div
-				style={{
-					position: 'absolute',
-					left: 0,
-					right: 0,
-					top: 270,
-					textAlign: 'center',
-					...wide(100, 820),
-					fontSize: 104,
-					color: C.bone,
-					letterSpacing: `${(1 - ramp(f, [182, 202], [0, 1], E.expoOut)) * 0.4 - 0.015}em`,
-					opacity: ramp(f, [182, 186]),
-					whiteSpace: 'nowrap',
-				}}
-			>
-				SÉLECTIONNÉE.
-			</div>
-			<Glass left={230} top={1262} width={620} height={276} radius={56} shine={ramp(f, [204, 226], [0, 1])} opacity={ramp(f, [212, 222])} />
+			{/* SÉLECTIONNÉE. */}
+			<GlassLabel top={220} padding="24px 52px" shine={ramp(f, [176, 226], [0, 1])} opacity={ramp(f, [182, 188])}>
+				<div style={{...wide(100, 820), fontSize: 96, lineHeight: 1, letterSpacing: '-0.02em', color: C.bone}}>
+					<MaskRise text="SÉLECTIONNÉE." frame={f} start={182} dur={12} stagger={0.8} />
+				</div>
+			</GlassLabel>
 			{/* préparée. — revealed by the same light that polishes the rim */}
-			<div
-				style={{
-					position: 'absolute',
-					left: 0,
-					right: 0,
-					top: 1300,
-					textAlign: 'center',
-					fontFamily: F.serif,
-					fontWeight: 300,
-					fontSize: 200,
-					lineHeight: 1,
-					color: C.bone,
-					clipPath: `inset(0 ${(1 - ramp(f, [204, 222], [0, 1], E.inOut)) * 100}% 0 0)`,
-					textShadow: '0 0 40px rgba(0,0,0,0.8)',
-				}}
-			>
-				préparée.
-			</div>
+			<GlassLabel top={1300} padding="22px 60px 34px" shine={ramp(f, [204, 226], [0, 1])} opacity={ramp(f, [204, 212])}>
+				<div
+					style={{
+						fontFamily: F.serif,
+						fontWeight: 300,
+						fontSize: 150,
+						lineHeight: 1.1,
+						color: C.bone,
+						clipPath: `inset(0 ${(1 - ramp(f, [204, 222], [0, 1], E.inOut)) * 100}% 0 0)`,
+					}}
+				>
+					préparée.
+				</div>
+			</GlassLabel>
 		</AbsoluteFill>
 	);
 };

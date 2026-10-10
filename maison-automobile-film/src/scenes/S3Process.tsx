@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {Glass} from '../components/Glass';
+import {Glass, GlassLabel} from '../components/Glass';
 import {MaskRise, SlotRoll} from '../components/KineticText';
 import {Vehicle} from '../components/Vehicle';
 import {keys, ramp} from '../lib/anim';
@@ -94,7 +94,7 @@ export const S3Process: React.FC = () => {
 
 	return (
 		<AbsoluteFill style={{background: C.ink, overflow: 'hidden'}}>
-			<AbsoluteFill style={{background: C.bone, clipPath: `circle(${iris}px at 540px 960px)`}}>
+			<AbsoluteFill style={{background: 'radial-gradient(90% 60% at 50% 46%, #FFFFFF 0%, #EDEDF0 55%, #D2D2D7 100%)', clipPath: `circle(${iris}px at 540px 960px)`}}>
 				{/* faint paper ruling */}
 				<AbsoluteFill
 					style={{
@@ -168,33 +168,43 @@ export const S3Process: React.FC = () => {
 											<line key={i} x1={x} x2={x} y1={LINE_Y} y2={LINE_Y + (i % 5 === 0 ? 22 : 11)} stroke={C.ink} strokeWidth={2} opacity={vis * 0.7} />
 										);
 									})}
-									{/* copper progress */}
+									{/* progress — the route already driven */}
 									<line x1={180} x2={180 + 720 * dot} y1={LINE_Y} y2={LINE_Y} stroke={C.copper} strokeWidth={6} opacity={dot > 0 ? 1 : 0} />
-									<circle cx={180 + 720 * dot} cy={LINE_Y} r={13} fill={C.copper} opacity={dot > 0 ? 1 : 0} />
-									{/* lieu — pin */}
-									<g transform={`translate(180 ${LINE_Y}) scale(${pinPop})`}>
-										<line x1={0} y1={0} x2={0} y2={-70} stroke={C.ink} strokeWidth={3} />
-										<circle cx={0} cy={-88} r={18} fill={C.bone} stroke={C.ink} strokeWidth={4} />
-										<circle cx={0} cy={-88} r={6} fill={C.ink} />
-									</g>
-									{/* horaire — clock */}
-									<g transform={`translate(900 ${LINE_Y - 96}) scale(${clockPop})`}>
-										<line x1={0} y1={34} x2={0} y2={96} stroke={C.ink} strokeWidth={3} />
-										<circle cx={0} cy={0} r={34} fill={C.bone} stroke={C.ink} strokeWidth={4} />
-										<line x1={0} y1={0} x2={0} y2={-22} stroke={C.ink} strokeWidth={4} strokeLinecap="round" transform={`rotate(${clockSpin})`} />
-										<line x1={0} y1={0} x2={0} y2={-14} stroke={C.copper} strokeWidth={4} strokeLinecap="round" transform={`rotate(${clockSpin / 12 + 90})`} />
-									</g>
 								</g>
 							)}
 						</svg>
 						{phaseB && (
 							<>
-								<div style={{position: 'absolute', left: 120, top: LINE_Y + 46, fontFamily: F.mono, fontSize: 26, letterSpacing: '0.08em', color: C.ink, opacity: pinPop}}>
-									VOTRE LIEU
+								{/* the chosen car stays on screen and drives the timeline */}
+								<div
+									style={{
+										position: 'absolute',
+										left: 260 + 560 * dot - 240,
+										top: LINE_Y - 141,
+										opacity: ramp(f, [56, 66]),
+									}}
+								>
+									<Vehicle type="sedan" paint="graphite" width={480} reflection={false} headlight={1} wheelAngle={dot * 720} sweep={ramp(f, [66, 100], [-0.2, 1.2])} />
 								</div>
-								<div style={{position: 'absolute', right: 96, top: LINE_Y + 46, fontFamily: F.mono, fontSize: 26, letterSpacing: '0.08em', color: C.ink, opacity: clockPop, textAlign: 'right'}}>
-									VOTRE HORAIRE
-								</div>
+								<GlassLabel top={LINE_Y + 56} align="left" inset={60} tone="light" padding="16px 26px" radius={36} shine={shine} opacity={pinPop}>
+									<div style={{display: 'flex', alignItems: 'center', gap: 14, fontFamily: F.mono, fontWeight: 600, fontSize: 28, letterSpacing: '0.04em', color: C.ink}}>
+										<svg width={30} height={38} viewBox="0 0 30 38">
+											<path d="M15 37 C15 37 2 22 2 14 A13 13 0 0 1 28 14 C28 22 15 37 15 37 Z" fill={C.ink} />
+											<circle cx={15} cy={14} r={5} fill="#FFFFFF" />
+										</svg>
+										VOTRE LIEU
+									</div>
+								</GlassLabel>
+								<GlassLabel top={LINE_Y + 56} align="right" inset={60} tone="light" padding="16px 26px" radius={36} shine={shine} opacity={clockPop}>
+									<div style={{display: 'flex', alignItems: 'center', gap: 14, fontFamily: F.mono, fontWeight: 600, fontSize: 28, letterSpacing: '0.04em', color: C.ink}}>
+										<svg width={34} height={34} viewBox="-17 -17 34 34">
+											<circle r={15} fill="none" stroke={C.ink} strokeWidth={3} />
+											<line x1={0} y1={0} x2={0} y2={-10} stroke={C.ink} strokeWidth={3} strokeLinecap="round" transform={`rotate(${clockSpin})`} />
+											<line x1={0} y1={0} x2={0} y2={-6} stroke={C.ink} strokeWidth={3} strokeLinecap="round" transform={`rotate(${clockSpin / 12 + 90})`} />
+										</svg>
+										VOTRE HORAIRE
+									</div>
+								</GlassLabel>
 							</>
 						)}
 					</>
@@ -202,59 +212,32 @@ export const S3Process: React.FC = () => {
 
 				{/* CHOISISSEZ. */}
 				{phaseA && (
-					<Glass tone="light" left={70} top={520} width={940} height={150} radius={56} shine={shine} />
-				)}
-				{phaseA && (
-					<div
-						style={{
-							position: 'absolute',
-							left: 0,
-							right: 0,
-							top: 560,
-							textAlign: 'center',
-							...wide(112, 840),
-							fontSize: 122,
-							letterSpacing: '-0.01em',
-							color: C.ink,
-						}}
-					>
-						<SlotRoll text="CHOISISSEZ." frame={f} start={3} spin={8} lockEvery={2} />
-					</div>
+					<GlassLabel top={540} tone="light" padding="26px 56px" radius={56} shine={shine}>
+						<div style={{...wide(112, 840), fontSize: 112, lineHeight: 1, letterSpacing: '-0.02em', color: C.ink}}>
+							<SlotRoll text="CHOISISSEZ." frame={f} start={3} spin={8} lockEvery={2} />
+						</div>
+					</GlassLabel>
 				)}
 
-				{/* ON COORDONNE. — rises out of the timeline */}
+				{/* ON COORDONNE. — rises into its panel */}
 				{phaseB && (
-					<Glass tone="light" left={70} top={620} width={940} height={170} radius={56} shine={shine} />
-				)}
-				{phaseB && (
-					<div
-						style={{
-							position: 'absolute',
-							left: 0,
-							right: 0,
-							top: LINE_Y - 420,
-							height: 262,
-							overflow: 'hidden',
-						}}
-					>
-						<div
-							style={{
-								position: 'absolute',
-								left: 0,
-								right: 0,
-								bottom: 0,
-								textAlign: 'center',
-								...wide(100, 840),
-								fontSize: 112,
-								letterSpacing: '-0.02em',
-								color: C.ink,
-								lineHeight: 1,
-								transform: `translateY(${(1 - ramp(f, [56, 72], [0, 1], E.expoOut)) * 160}px)`,
-							}}
-						>
-							ON COORDONNE.
+					<GlassLabel top={600} tone="light" padding="30px 56px" radius={56} shine={shine} opacity={ramp(f, [50, 58])}>
+						<div style={{overflow: 'hidden'}}>
+							<div
+								style={{
+									...wide(100, 840),
+									fontSize: 96,
+									whiteSpace: 'nowrap',
+									letterSpacing: '-0.02em',
+									color: C.ink,
+									lineHeight: 1.05,
+									transform: `translateY(${(1 - ramp(f, [56, 72], [0, 1], E.expoOut)) * 110}%)`,
+								}}
+							>
+								ON COORDONNE.
+							</div>
 						</div>
-					</div>
+					</GlassLabel>
 				)}
 
 				{/* ------------------------------------------------ keys */}
@@ -275,35 +258,14 @@ export const S3Process: React.FC = () => {
 								<Key lit={ramp(f, [112, 140], [0, 1], E.inOut)} />
 							</div>
 						</div>
-						<Glass tone="light" left={50} top={1130} width={980} height={380} radius={60} shine={shine} />
-						<div
-							style={{
-								position: 'absolute',
-								left: 84,
-								top: 1170,
-								fontFamily: F.serif,
-								fontWeight: 300,
-								fontSize: 140,
-								color: C.ink,
-								lineHeight: 1,
-							}}
-						>
-							<MaskRise text="prenez" frame={f} start={107} dur={12} stagger={1} />
-						</div>
-						<div
-							style={{
-								position: 'absolute',
-								left: 76,
-								top: 1300,
-								...wide(104, 880),
-								fontSize: 176,
-								letterSpacing: '-0.03em',
-								color: C.ink,
-								lineHeight: 1,
-							}}
-						>
-							<MaskRise text="LES CLÉS." frame={f} start={111} dur={10} stagger={1.2} />
-						</div>
+						<GlassLabel top={1160} tone="light" padding="30px 64px 38px" radius={60} shine={shine}>
+							<div style={{fontFamily: F.serif, fontWeight: 300, fontSize: 112, color: C.ink, lineHeight: 1.05}}>
+								<MaskRise text="prenez" frame={f} start={107} dur={12} stagger={1} />
+							</div>
+							<div style={{...wide(104, 880), fontSize: 150, letterSpacing: '-0.03em', color: C.ink, lineHeight: 1}}>
+								<MaskRise text="LES CLÉS." frame={f} start={111} dur={10} stagger={1.2} />
+							</div>
+						</GlassLabel>
 					</>
 				)}
 			</AbsoluteFill>

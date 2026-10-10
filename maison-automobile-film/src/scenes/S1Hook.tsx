@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {Glass} from '../components/Glass';
+import {GlassLabel} from '../components/Glass';
 import {Vehicle} from '../components/Vehicle';
 import {keys, ramp} from '../lib/anim';
 import {C, E, F, wide} from '../lib/theme';
@@ -30,7 +30,7 @@ const Stamp: React.FC<{frame: number; at: number; children: React.ReactNode; sty
 	return (
 		<div
 			style={{
-				transformOrigin: '0% 100%',
+				transformOrigin: '50% 100%',
 				transform: `scale(${1.1 - 0.1 * p}) translateY(${(1 - p) * 10}px)`,
 				...style,
 			}}
@@ -60,36 +60,27 @@ export const S1Hook: React.FC = () => {
 				<AbsoluteFill
 					style={{background: 'linear-gradient(180deg, #E8EBEC 0%, #D7DCDE 60%, #CDD3D6 100%)'}}
 				/>
-				{/* giant ticket number, bleeding off frame */}
+				{/* giant ticket number, centred, drifting */}
 				<div
 					style={{
 						position: 'absolute',
-						left: -70 - coldDrift,
-						top: 150,
-						...wide(62, 820),
-						fontSize: 860,
+						left: 0,
+						right: 0,
+						top: 270,
+						textAlign: 'center',
+						...wide(62, 800),
+						fontSize: 520,
 						lineHeight: 0.8,
-						letterSpacing: '-0.03em',
+						letterSpacing: '-0.04em',
 						color: C.coldDeep,
+						transform: `translateX(${-coldDrift}px)`,
 					}}
 				>
 					047
 				</div>
-				<Glass left={64} top={226} width={352} height={70} radius={35} tone="light" shine={ramp(frame, [0, 54], [0, 1], E.glide)} />
-				<div
-					style={{
-						position: 'absolute',
-						left: 84,
-						top: 250,
-						fontFamily: F.mono,
-						fontSize: 26,
-						letterSpacing: '0.08em',
-						color: C.coldInk,
-						opacity: 0.7,
-					}}
-				>
-					VOTRE NUMÉRO
-				</div>
+				<GlassLabel top={196} tone="light" padding="14px 30px" radius={40} shine={ramp(frame, [0, 54], [0, 1], E.glide)}>
+					<div style={{fontFamily: F.mono, fontWeight: 500, fontSize: 26, letterSpacing: '0.08em', color: C.coldInk}}>VOTRE NUMÉRO</div>
+				</GlassLabel>
 
 				{/* the queue — tickets crawling, going nowhere */}
 				<div
@@ -118,28 +109,25 @@ export const S1Hook: React.FC = () => {
 					))}
 				</div>
 
-				{/* the line — floats on a glass panel */}
-				<Glass left={40} top={918} width={1000} height={640} radius={60} tone="light" shine={ramp(frame, [0, 54], [0, 1], E.glide)} />
-				<div
-					style={{
-						position: 'absolute',
-						left: 84,
-						top: 960,
-						...wide(108, 860),
-						fontSize: 136,
-						lineHeight: 0.92,
-						letterSpacing: '-0.025em',
-						color: C.coldInk,
-					}}
-				>
-					<Stamp frame={frame} at={3}>PAS DE</Stamp>
-					<Stamp frame={frame} at={8}>COMPTOIR.</Stamp>
-					<div style={{height: 22}} />
-					<Stamp frame={frame} at={33}>PAS DE</Stamp>
-					<Stamp frame={frame} at={39} style={{color: C.ledRed}}>
-						FILE.
-					</Stamp>
-				</div>
+				{/* the line — on glass; the panel grows when the second line lands */}
+				<GlassLabel top={940} tone="light" padding="48px 60px" radius={60} shine={ramp(frame, [0, 54], [0, 1], E.glide)}>
+					<div
+						style={{
+							...wide(108, 860),
+							fontSize: 128,
+							lineHeight: 0.95,
+							letterSpacing: '-0.03em',
+							color: C.coldInk,
+							textAlign: 'center',
+						}}
+					>
+						<Stamp frame={frame} at={3}>PAS DE</Stamp>
+						<Stamp frame={frame} at={8}>COMPTOIR.</Stamp>
+						{frame >= 33 && <div style={{height: 26}} />}
+						<Stamp frame={frame} at={33}>PAS DE</Stamp>
+						<Stamp frame={frame} at={39}>FILE.</Stamp>
+					</div>
+				</GlassLabel>
 			</AbsoluteFill>
 
 			{/* ---------------------------- Maison world, dragged in by the car */}

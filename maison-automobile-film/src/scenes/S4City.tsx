@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {Glass} from '../components/Glass';
+import {GlassLabel} from '../components/Glass';
 import {Squeeze, TypeOn} from '../components/KineticText';
 import {keys, ramp} from '../lib/anim';
 import {C, E, F, wide} from '../lib/theme';
@@ -57,10 +57,11 @@ export const S4City: React.FC = () => {
 	};
 	const car = bez(travel);
 	const beatPulse = Math.exp(-((f % 15) / 4));
+	const sheen = ramp(f, [0, 135], [0, 1]);
 
 	const nameStyle: React.CSSProperties = {
 		...wide(62, 900),
-		fontSize: 172,
+		fontSize: 150,
 		lineHeight: 0.8,
 		letterSpacing: '-0.01em',
 		color: C.bone,
@@ -81,48 +82,35 @@ export const S4City: React.FC = () => {
 			/>
 
 			<AbsoluteFill style={{opacity: fade}}>
-				{/* LAVAL — north, on glass */}
-				<Glass left={36 + lavX} top={300} width={780} height={262} radius={56} shine={ramp(f, [0, 135], [0, 1])} />
-				<div style={{position: 'absolute', left: 56 + lavX, top: 330, filter: lavBlur > 0.5 ? `blur(${lavBlur}px)` : undefined, ...nameStyle}}>
-					<Squeeze text="LAVAL" keep={[0, 1, 2]} frame={f} start={58} dur={12} charWidth={0.75} />
-				</div>
-
-				{/* MONTRÉAL — south, on glass */}
-				<Glass left={40 + mtlX} top={966} width={1000} height={262} radius={56} shine={ramp(f, [0, 135], [0, 1])} />
-				<div style={{position: 'absolute', left: 46 + mtlX, top: 1000, filter: mtlBlur > 0.5 ? `blur(${mtlBlur}px)` : undefined, ...nameStyle}}>
-					<Squeeze text="MONTRÉAL" keep={[0, 3, 7]} frame={f} start={56} dur={12} charWidth={0.75} />
-				</div>
-
-				{/* river label */}
-				<div style={{position: 'absolute', left: 64, top: RIVER_Y - 62, fontFamily: F.mono, fontSize: 20, letterSpacing: '0.12em', color: C.smoke}}>
-					<TypeOn text="RIVIÈRE DES PRAIRIES" frame={f} start={22} cps={1.4} cursor={false} />
-				</div>
-
-				{/* copy, right column — appears once names have folded */}
-				<Glass left={530} top={372} width={500} height={300} radius={56} shine={ramp(f, [0, 135], [0, 1])} opacity={ramp(f, [78, 92])} />
-				<div style={{position: 'absolute', left: 560, top: 1040, color: C.bone}}>
-					<div style={{fontFamily: F.mono, fontSize: 24, letterSpacing: '0.1em', color: C.copper}}>
-						<TypeOn text="REMISE COORDONNÉE" frame={f} start={70} cps={1.2} cursorColor={C.copper} />
+				{/* LAVAL — north. The panel wraps the name, so it shrinks as LAVAL folds to LAV */}
+				<GlassLabel top={300} align="left" inset={50} padding="30px 40px 26px" radius={56} shine={sheen} transform={`translateX(${lavX}px)`}>
+					<div style={{...nameStyle, filter: lavBlur > 0.5 ? `blur(${lavBlur}px)` : undefined}}>
+						<Squeeze text="LAVAL" keep={[0, 1, 2]} frame={f} start={58} dur={12} charWidth={0.75} />
 					</div>
-				</div>
-				<div
-					style={{
-						position: 'absolute',
-						left: 560,
-						top: 410,
-						fontFamily: F.serif,
-						fontWeight: 300,
-						fontSize: 66,
-						lineHeight: 1.08,
-						color: C.bone,
-					}}
-				>
-					{['selon votre', 'lieu et', 'votre horaire.'].map((l, i) => (
-						<div key={i} style={{overflow: 'hidden'}}>
-							<div style={{transform: `translateY(${(1 - ramp(f, [80 + i * 5, 94 + i * 5], [0, 1], E.expoOut)) * 105}%)`}}>{l}</div>
-						</div>
-					))}
-				</div>
+				</GlassLabel>
+
+				{/* MONTRÉAL — south */}
+				<GlassLabel top={1000} align="left" inset={50} padding="30px 40px 26px" radius={56} shine={sheen} transform={`translateX(${mtlX}px)`}>
+					<div style={{...nameStyle, filter: mtlBlur > 0.5 ? `blur(${mtlBlur}px)` : undefined}}>
+						<Squeeze text="MONTRÉAL" keep={[0, 3, 7]} frame={f} start={56} dur={12} charWidth={0.75} />
+					</div>
+				</GlassLabel>
+				<GlassLabel top={1226} align="left" inset={50} padding="12px 24px" radius={30} shine={sheen} opacity={ramp(f, [68, 74])}>
+					<div style={{fontFamily: F.mono, fontWeight: 500, fontSize: 24, letterSpacing: '0.08em', color: C.bone}}>
+						<TypeOn text="REMISE COORDONNÉE" frame={f} start={70} cps={1.2} cursorColor={C.bone} />
+					</div>
+				</GlassLabel>
+
+				{/* copy, right column — appears once the names have folded */}
+				<GlassLabel top={300} align="right" inset={50} padding="26px 40px 30px" radius={52} shine={sheen} opacity={ramp(f, [76, 86])}>
+					<div style={{fontFamily: F.serif, fontWeight: 300, fontSize: 62, lineHeight: 1.1, color: C.bone}}>
+						{['selon votre', 'lieu et', 'votre horaire.'].map((l, i) => (
+							<div key={i} style={{overflow: 'hidden'}}>
+								<div style={{transform: `translateY(${(1 - ramp(f, [80 + i * 5, 94 + i * 5], [0, 1], E.expoOut)) * 105}%)`}}>{l}</div>
+							</div>
+						))}
+					</div>
+				</GlassLabel>
 			</AbsoluteFill>
 
 			<svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>

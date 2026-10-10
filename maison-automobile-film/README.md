@@ -1,4 +1,6 @@
-# Maison Automobile — Launch Film v3 (en cours)
+# Maison Automobile — Launch Film v4 (en cours)
+
+> **v4 — retours :** panneaux de verre qui s'ajustent au texte et le centrent (`GlassLabel`), 047 lisible, titres de la flotte hors des voitures, scène « On coordonne » enrichie (la voiture roule sur la ligne de temps), étiquette « Rivière des Prairies » retirée. Voix off prête à brancher : voir **`VOIX-OFF-ET-MUSIQUE.md`**.
 
 > **v3 — direction monochrome :** palette noir / blanc / gris, une seule famille sans empattement (Geist), plus d'italique, de cuivre ni de monospace.
 >
@@ -95,7 +97,7 @@ Chaque changement de scène tombe sur la grille du tempo : 120 BPM, 1 temps = 15
 | 11,1 s | **CHOISISSEZ.** |
 | 12,8 s | **ON COORDONNE.** · `VOTRE LIEU` · `VOTRE HORAIRE` |
 | 14,6 s | *prenez* · **LES CLÉS.** |
-| 16,0 s | **LAVAL** · `RIVIÈRE DES PRAIRIES` · **MONTRÉAL** |
+| 16,0 s | **LAVAL** · **MONTRÉAL** |
 | 17,9 s | **LAV** / **MTL** |
 | 18,3 s | `REMISE COORDONNÉE` · *selon votre lieu et votre horaire.* |
 | 21,5 s | **MAISON / AUTOMOBILE** |
