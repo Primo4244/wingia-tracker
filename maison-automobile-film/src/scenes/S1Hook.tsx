@@ -83,7 +83,7 @@ export const S1Hook: React.FC = () => {
 						top: 250,
 						fontFamily: F.mono,
 						fontSize: 26,
-						letterSpacing: '0.2em',
+						letterSpacing: '0.08em',
 						color: C.coldInk,
 						opacity: 0.7,
 					}}

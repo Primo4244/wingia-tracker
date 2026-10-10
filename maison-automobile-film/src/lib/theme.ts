@@ -1,35 +1,39 @@
 import {Easing} from 'remotion';
 
 /**
- * Maison Automobile — reconstructed visual system.
- * The live site could not be reached during production, so this palette is a
- * deliberate art-direction choice (ink / bone / copper). Swap here if the
- * official brand values differ.
+ * Maison Automobile — visual system.
+ * Monochrome, like the logo (black on white): deep black, white, and a
+ * ladder of neutral greys. One sans family (Geist) carries everything; the
+ * hierarchy comes from weight and size, never from italics or a colour accent.
+ * `copper` / `copperHot` keep their names for the accent role (lines, pins,
+ * progress) but are now neutral greys that read on both black and white.
  */
 export const C = {
-	ink: '#0A0A0B',
-	carbon: '#121214',
-	graphite: '#232327',
-	smoke: '#6E6B66',
-	stone: '#A8A29A',
-	bone: '#EEE9E0',
-	paper: '#F6F3EE',
-	copper: '#C8864A',
-	copperHot: '#E9A766',
+	ink: '#000000',
+	carbon: '#0E0E10',
+	graphite: '#1D1D1F',
+	smoke: '#6E6E73',
+	stone: '#86868B',
+	bone: '#F5F5F7',
+	paper: '#FBFBFD',
+	copper: '#8E8E93',
+	copperHot: '#FFFFFF',
 	// the "old way" — cold institutional counter
 	cold: '#DCE0E2',
 	coldDeep: '#C4CACD',
 	coldInk: '#1B2024',
-	ledRed: '#E23B2E',
+	ledRed: '#1B2024',
 };
 
 export const F = {
-	display: 'Archivo',
-	serif: 'Instrument Serif',
-	mono: 'IBM Plex Mono',
+	display: 'Geist',
+	/** light-weight role (formerly the italic serif) */
+	serif: 'Geist',
+	/** small labels (formerly monospace) */
+	mono: 'Geist',
 };
 
-/** Archivo variable axes helper (wdth 62–125, wght 100–900). */
+/** Weight helper. The width argument is kept for call-site compatibility; Geist has no wdth axis. */
 export const wide = (wdth: number, wght: number) => ({
 	fontFamily: F.display,
 	fontVariationSettings: `'wdth' ${wdth}, 'wght' ${wght}`,

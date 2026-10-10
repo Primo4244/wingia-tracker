@@ -53,7 +53,7 @@ export const S5Brand: React.FC = () => {
 					MONTRÉAL — LAVAL
 				</div>
 
-				<Glass left={110} top={1058} width={860} height={240} radius={56} shine={ramp(f, [0, 195], [0, 1])} opacity={ramp(f, [74, 88])} />
+				<Glass left={80} top={1058} width={920} height={210} radius={56} shine={ramp(f, [0, 195], [0, 1])} opacity={ramp(f, [74, 88])} />
 				<div
 					style={{
 						position: 'absolute',
@@ -62,7 +62,7 @@ export const S5Brand: React.FC = () => {
 						top: 1090,
 						textAlign: 'center',
 						fontFamily: F.serif,
-						fontSize: 80,
+						fontSize: 64,
 						lineHeight: 1.12,
 						color: C.bone,
 					}}
@@ -70,7 +70,7 @@ export const S5Brand: React.FC = () => {
 					<div>
 						<FocusWords text="Votre voiture." frame={f} start={78} />
 					</div>
-					<div style={{fontStyle: 'italic', color: C.copperHot}}>
+					<div style={{fontWeight: 400, color: C.stone}}>
 						<FocusWords text="Là où vous en avez besoin." frame={f} start={90} stagger={3} />
 					</div>
 				</div>

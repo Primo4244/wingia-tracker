@@ -60,7 +60,7 @@ export const S4City: React.FC = () => {
 
 	const nameStyle: React.CSSProperties = {
 		...wide(62, 900),
-		fontSize: 238,
+		fontSize: 172,
 		lineHeight: 0.8,
 		letterSpacing: '-0.01em',
 		color: C.bone,
@@ -94,14 +94,14 @@ export const S4City: React.FC = () => {
 				</div>
 
 				{/* river label */}
-				<div style={{position: 'absolute', left: 64, top: RIVER_Y - 62, fontFamily: F.mono, fontSize: 20, letterSpacing: '0.3em', color: C.smoke}}>
+				<div style={{position: 'absolute', left: 64, top: RIVER_Y - 62, fontFamily: F.mono, fontSize: 20, letterSpacing: '0.12em', color: C.smoke}}>
 					<TypeOn text="RIVIÈRE DES PRAIRIES" frame={f} start={22} cps={1.4} cursor={false} />
 				</div>
 
 				{/* copy, right column — appears once names have folded */}
 				<Glass left={530} top={372} width={500} height={300} radius={56} shine={ramp(f, [0, 135], [0, 1])} opacity={ramp(f, [78, 92])} />
 				<div style={{position: 'absolute', left: 560, top: 1040, color: C.bone}}>
-					<div style={{fontFamily: F.mono, fontSize: 24, letterSpacing: '0.24em', color: C.copper}}>
+					<div style={{fontFamily: F.mono, fontSize: 24, letterSpacing: '0.1em', color: C.copper}}>
 						<TypeOn text="REMISE COORDONNÉE" frame={f} start={70} cps={1.2} cursorColor={C.copper} />
 					</div>
 				</div>
@@ -111,7 +111,7 @@ export const S4City: React.FC = () => {
 						left: 560,
 						top: 410,
 						fontFamily: F.serif,
-						fontStyle: 'italic',
+						fontWeight: 300,
 						fontSize: 66,
 						lineHeight: 1.08,
 						color: C.bone,

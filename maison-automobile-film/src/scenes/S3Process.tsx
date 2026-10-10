@@ -189,10 +189,10 @@ export const S3Process: React.FC = () => {
 						</svg>
 						{phaseB && (
 							<>
-								<div style={{position: 'absolute', left: 120, top: LINE_Y + 46, fontFamily: F.mono, fontSize: 26, letterSpacing: '0.18em', color: C.ink, opacity: pinPop}}>
+								<div style={{position: 'absolute', left: 120, top: LINE_Y + 46, fontFamily: F.mono, fontSize: 26, letterSpacing: '0.08em', color: C.ink, opacity: pinPop}}>
 									VOTRE LIEU
 								</div>
-								<div style={{position: 'absolute', right: 96, top: LINE_Y + 46, fontFamily: F.mono, fontSize: 26, letterSpacing: '0.18em', color: C.ink, opacity: clockPop, textAlign: 'right'}}>
+								<div style={{position: 'absolute', right: 96, top: LINE_Y + 46, fontFamily: F.mono, fontSize: 26, letterSpacing: '0.08em', color: C.ink, opacity: clockPop, textAlign: 'right'}}>
 									VOTRE HORAIRE
 								</div>
 							</>
@@ -282,7 +282,7 @@ export const S3Process: React.FC = () => {
 								left: 84,
 								top: 1170,
 								fontFamily: F.serif,
-								fontStyle: 'italic',
+								fontWeight: 300,
 								fontSize: 140,
 								color: C.ink,
 								lineHeight: 1,

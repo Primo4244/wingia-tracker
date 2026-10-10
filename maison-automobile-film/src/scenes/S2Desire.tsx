@@ -63,7 +63,7 @@ const Reveal: React.FC<{f: number}> = ({f}) => {
 					left: 72,
 					top: 770,
 					fontFamily: F.serif,
-					fontStyle: 'italic',
+					fontWeight: 300,
 					fontSize: 168,
 					lineHeight: 1,
 					color: C.copper,
@@ -220,7 +220,7 @@ const Fleet: React.FC<{f: number}> = ({f}) => {
 								bottom: 34,
 								fontFamily: F.mono,
 								fontSize: 22,
-								letterSpacing: '0.2em',
+								letterSpacing: '0.08em',
 								color: C.stone,
 								opacity: 1 - collapse,
 							}}
@@ -322,7 +322,7 @@ const Dial: React.FC<{f: number}> = ({f}) => {
 					})}
 				</g>
 				<g transform={`rotate(${f * 0.35} 540 960)`} opacity={textOp}>
-					<text fontFamily={F.mono} fontSize={24} letterSpacing="9" fill={C.stone}>
+					<text fontFamily={F.mono} fontSize={24} letterSpacing="5" fill={C.stone}>
 						<textPath href="#dialText">
 							SÉLECTIONNÉE — PRÉPARÉE — SÉLECTIONNÉE — PRÉPARÉE — SÉLECTIONNÉE — PRÉPARÉE —
 						</textPath>
@@ -371,7 +371,7 @@ const Dial: React.FC<{f: number}> = ({f}) => {
 					top: 1300,
 					textAlign: 'center',
 					fontFamily: F.serif,
-					fontStyle: 'italic',
+					fontWeight: 300,
 					fontSize: 200,
 					lineHeight: 1,
 					color: C.bone,

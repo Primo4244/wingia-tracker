@@ -1,5 +1,7 @@
-# Maison Automobile — Launch Film v2 (en cours)
+# Maison Automobile — Launch Film v3 (en cours)
 
+> **v3 — direction monochrome :** palette noir / blanc / gris, une seule famille sans empattement (Geist), plus d'italique, de cuivre ni de monospace.
+>
 > **v2 — étape 1 :** interface en verre (panneaux semi-transparents, flou, bordure fine, reflet mobile). Retrait du HUD, de l'afficheur et des coordonnées répétées. Étapes 2 à 4 (logo SVG, vraies voitures, voix off) en attente d'assets.
 
 Film de lancement vertical (Reels / TikTok / Meta Ads), construit dans Remotion.
@@ -36,7 +38,7 @@ Conséquences :
   - l'adresse maisonautomobile.ca.
 - **Aucun modèle, prix, condition ou promotion** n'apparaît.
 - Les véhicules sont des **silhouettes vectorielles génériques**, éclairées comme en studio (compacte, berline, VUS). Elles n'évoquent aucune marque. C'est un choix délibéré, conforme au brief : *« si un asset manque, crée une solution graphique plutôt qu'une photo médiocre »*.
-- Le **logo est une reconstruction typographique** (Archivo Expanded), et la palette encre / os / cuivre est un choix de direction artistique. Les deux se remplacent à un seul endroit : `src/lib/theme.ts` pour la palette, `src/components/BrandLockup.tsx` pour le logo.
+- Le **logo est une reconstruction typographique** (Geist) en attendant le SVG officiel. La direction est monochrome, alignée sur le logo noir sur blanc : noir, blanc et gris neutres, une seule famille (Geist) dont la hiérarchie vient des graisses, sans italique ni couleur d'accent. Les deux se remplacent à un seul endroit : `src/lib/theme.ts` pour la palette, `src/components/BrandLockup.tsx` pour le logo.
 - Les seules données ajoutées sont des **faits publics** : les coordonnées GPS de Montréal (45.5019° N, 73.5674° O) et de Laval (45.6066° N, 73.7124° O), et la rivière des Prairies qui les sépare. La disposition est géographiquement juste : Laval au nord, en haut ; Montréal au sud, en bas.
 
 ---
@@ -63,7 +65,7 @@ Le phare laisse une **ligne de lumière**. Cette ligne devient le fil conducteur
 | 01 | **Hook** — comptoir, file, passage de la carrosserie | 0–90 | 0,0–3,0 s | 3,0 s |
 | 02 | **Désir** — tracé lumière « VOITURE », flotte en 3 bandes, zoom optique dans la roue → cadran | 90–330 | 3,0–11,0 s | 8,0 s |
 | 03 | **Simplicité** — sélecteur → ligne de temps lieu/horaire → clés en pendule | 330–480 | 11,0–16,0 s | 5,0 s |
-| 04 | **Territoire** — LAVAL / rivière / MONTRÉAL, pliage en LAV / MTL, route cuivre | 480–615 | 16,0–20,5 s | 4,5 s |
+| 04 | **Territoire** — LAVAL / rivière / MONTRÉAL, pliage en LAV / MTL, route grise | 480–615 | 16,0–20,5 s | 4,5 s |
 | 05 | **Marque** — silence, ligne, MAISON / AUTOMOBILE, signature, URL, tenue | 615–810 | 20,5–27,0 s | 6,5 s |
 
 Chaque changement de scène tombe sur la grille du tempo : 120 BPM, 1 temps = 15 frames.
@@ -122,7 +124,7 @@ Le script tient en peu de mots, avec des phrases nominales. Il est calé sur l'i
 | 12,7 s | On coordonne. | « ON COORDONNE. » (f386) |
 | 14,5 s | Vous prenez les clés. | chute de la clé (f436) |
 | 16,0 s | Montréal. Laval. | coup sur MONTRÉAL (f480) |
-| 18,5 s | Selon votre lieu et votre horaire. | texte en italique (f560) |
+| 18,5 s | Selon votre lieu et votre horaire. | texte en graisse légère (f560) |
 | 21,5 s | Maison Automobile. | coup de marque (f645) |
 | 23,1 s | Votre voiture. Là où vous en avez besoin. | signature (f693) |
 
@@ -171,9 +173,7 @@ Les effets sonores sont des one-shots placés à la frame (`src/lib/cues.ts`) :
 
 | Asset | Source |
 |---|---|
-| Archivo (variable, wdth 62–125) | Google Fonts, OFL — `public/fonts/` |
-| Instrument Serif (roman + italique) | Google Fonts, OFL |
-| IBM Plex Mono 400/500 | Google Fonts, OFL |
+| Geist (variable, wght 100–900) | Google Fonts, OFL — `public/fonts/geist-var.woff2` |
 | Véhicules (compacte, berline, VUS), roues, clé | Vectoriels dessinés pour le film — `src/components/Vehicle.tsx`, `S3Process.tsx` |
 | Musique + 15 SFX | Générés — `scripts/generate_audio.py` → `public/audio/` |
 | Logo | Reconstruction typographique — `src/components/BrandLockup.tsx` |
