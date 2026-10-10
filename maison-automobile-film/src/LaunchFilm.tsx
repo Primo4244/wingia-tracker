@@ -5,7 +5,7 @@ import {BeatImpact} from './components/BeatImpact';
 import {Grain} from './components/Grain';
 import {loadFonts} from './lib/fonts';
 import {CUES} from './lib/cues';
-import {VO_LINES} from './lib/vo';
+import {VO_LINES, voPresence} from './lib/vo';
 import {C, T} from './lib/theme';
 import {S1Hook} from './scenes/S1Hook';
 import {S2Desire} from './scenes/S2Desire';
@@ -54,7 +54,13 @@ export const LaunchFilm: React.FC<LaunchFilmProps> = ({voiceover = null, music =
 
 		<Grain vignette={vignette} />
 
-		{music && <Audio src={staticFile('audio/music.wav')} volume={0.78} />}
+		{music && (
+			<Audio
+				src={staticFile('audio/music.wav')}
+				// the music steps back (about -7 dB) while the voice speaks
+				volume={(f) => 0.78 * (1 - (voLines ? 0.55 * voPresence(f) : 0))}
+			/>
+		)}
 		{sfx &&
 			CUES.map((c, i) => (
 				<Sequence key={i} from={c.at} name={`sfx ${c.sfx}`} layout="none">

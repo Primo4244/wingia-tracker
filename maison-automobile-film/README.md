@@ -1,4 +1,6 @@
-# Maison Automobile — Launch Film v5 (en cours)
+# Maison Automobile — Launch Film v6 (en cours)
+
+> **v6 — voix off :** les 12 répliques ElevenLabs (voix Maggie) sont intégrées dans `public/audio/vo/` : silence de tête coupé, chaque réplique ramenée à −18 LUFS, placée à la frame par `src/lib/vo.ts`. La musique baisse d'environ 7 dB pendant que la voix parle. Activée par défaut (`voLines: true`).
 
 > **v5 — logo et Québec :** logo officiel (SVG fourni, `public/brand/`) animé en scène 5 : piliers qui montent depuis la ligne, arcs qui se dessinent, puis MAISON / AUTOMOBILE. Scène 4 refaite autour de la province : PARTOUT AU QUÉBEC.
 
