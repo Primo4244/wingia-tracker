@@ -47,12 +47,12 @@ export const CUES: Cue[] = [
 	{at: 466, sfx: 'whoosh', vol: 0.5},
 	// TERRITORY
 	{at: 480, sfx: 'impact', vol: 0.9},
-	{at: 487, sfx: 'whoosh_fast', vol: 0.5},
-	...typeRun(486, 512, 2, 0.14),
-	{at: 506, sfx: 'click', vol: 0.3},
-	{at: 520, sfx: 'click', vol: 0.3},
-	{at: 535, sfx: 'whoosh_fast', vol: 0.45},
-	...typeRun(550, 566, 1, 0.1),
+	// the province: three light pulses from Montréal, then the panels land
+	{at: 490, sfx: 'whoosh', vol: 0.3},
+	{at: 504, sfx: 'click', vol: 0.3},
+	{at: 505, sfx: 'whoosh', vol: 0.24},
+	{at: 520, sfx: 'whoosh', vol: 0.18},
+	{at: 530, sfx: 'click', vol: 0.26},
 	{at: 585, sfx: 'riser', vol: 0.65},
 	{at: 606, sfx: 'air', vol: 0.35},
 	// BRAND

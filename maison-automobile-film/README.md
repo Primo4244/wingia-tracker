@@ -1,4 +1,6 @@
-# Maison Automobile — Launch Film v4 (en cours)
+# Maison Automobile — Launch Film v5 (en cours)
+
+> **v5 — logo et Québec :** logo officiel (SVG fourni, `public/brand/`) animé en scène 5 : piliers qui montent depuis la ligne, arcs qui se dessinent, puis MAISON / AUTOMOBILE. Scène 4 refaite autour de la province : PARTOUT AU QUÉBEC.
 
 > **v4 — retours :** panneaux de verre qui s'ajustent au texte et le centrent (`GlassLabel`), 047 lisible, titres de la flotte hors des voitures, scène « On coordonne » enrichie (la voiture roule sur la ligne de temps), étiquette « Rivière des Prairies » retirée. Voix off prête à brancher : voir **`VOIX-OFF-ET-MUSIQUE.md`**.
 
@@ -34,14 +36,14 @@ Conséquences :
   - flotte sélectionnée, de l'accessible au premium ;
   - préparation du véhicule ;
   - remise coordonnée selon le lieu et l'horaire ;
-  - Montréal / Laval ;
+  - Montréal / Laval, et **partout au Québec** (zone de service confirmée par le client en v5) ;
   - pas de comptoir, pas de file ;
   - la signature « Votre voiture. Là où vous en avez besoin. » ;
   - l'adresse maisonautomobile.ca.
 - **Aucun modèle, prix, condition ou promotion** n'apparaît.
 - Les véhicules sont des **silhouettes vectorielles génériques**, éclairées comme en studio (compacte, berline, VUS). Elles n'évoquent aucune marque. C'est un choix délibéré, conforme au brief : *« si un asset manque, crée une solution graphique plutôt qu'une photo médiocre »*.
-- Le **logo est une reconstruction typographique** (Geist) en attendant le SVG officiel. La direction est monochrome, alignée sur le logo noir sur blanc : noir, blanc et gris neutres, une seule famille (Geist) dont la hiérarchie vient des graisses, sans italique ni couleur d'accent. Les deux se remplacent à un seul endroit : `src/lib/theme.ts` pour la palette, `src/components/BrandLockup.tsx` pour le logo.
-- Les seules données ajoutées sont des **faits publics** : les coordonnées GPS de Montréal (45.5019° N, 73.5674° O) et de Laval (45.6066° N, 73.7124° O), et la rivière des Prairies qui les sépare. La disposition est géographiquement juste : Laval au nord, en haut ; Montréal au sud, en bas.
+- Le **logo officiel** (SVG fourni par le client, vectorisation automatique) est dans `public/brand/` ; ses tracés sont dans `src/lib/logo-paths.ts` et son animation dans `src/components/Logo.tsx`. La direction est monochrome, alignée sur le logo noir sur blanc : noir, blanc et gris neutres, une seule famille (Geist) dont la hiérarchie vient des graisses, sans italique ni couleur d'accent. Les deux se remplacent à un seul endroit : `src/lib/theme.ts` pour la palette, `src/components/BrandLockup.tsx` pour le logo.
+- Les seules données ajoutées sont des **faits publics** : le contour de la province de Québec (données de frontières publiques, `click_that_hood/canada.geojson`, simplifié dans `src/lib/quebec.ts`) et la position de Montréal, point de départ de l'onde lumineuse.
 
 ---
 
@@ -57,7 +59,7 @@ Le phare laisse une **ligne de lumière**. Cette ligne devient le fil conducteur
 - la roue devient un cadran ;
 - le cadran devient le sélecteur ;
 - le sélecteur s'aplatit en ligne de temps ;
-- la rivière des Prairies se redresse en ligne ;
+- la province s'aplatit en ligne ;
 - cette ligne ouvre enfin le logo.
 
 ### Séquences et durées
@@ -67,7 +69,7 @@ Le phare laisse une **ligne de lumière**. Cette ligne devient le fil conducteur
 | 01 | **Hook** — comptoir, file, passage de la carrosserie | 0–90 | 0,0–3,0 s | 3,0 s |
 | 02 | **Désir** — tracé lumière « VOITURE », flotte en 3 bandes, zoom optique dans la roue → cadran | 90–330 | 3,0–11,0 s | 8,0 s |
 | 03 | **Simplicité** — sélecteur → ligne de temps lieu/horaire → clés en pendule | 330–480 | 11,0–16,0 s | 5,0 s |
-| 04 | **Territoire** — LAVAL / rivière / MONTRÉAL, pliage en LAV / MTL, route grise | 480–615 | 16,0–20,5 s | 4,5 s |
+| 04 | **Territoire** — contour du Québec tracé en lumière, onde depuis Montréal, PARTOUT AU QUÉBEC | 480–615 | 16,0–20,5 s | 4,5 s |
 | 05 | **Marque** — silence, ligne, MAISON / AUTOMOBILE, signature, URL, tenue | 615–810 | 20,5–27,0 s | 6,5 s |
 
 Chaque changement de scène tombe sur la grille du tempo : 120 BPM, 1 temps = 15 frames.
@@ -77,8 +79,8 @@ Chaque changement de scène tombe sur la grille du tempo : 120 BPM, 1 temps = 15
 1. **La carrosserie qui efface le comptoir.** Le monde sombre est révélé derrière le coffre du véhicule. Le flou de mouvement est proportionnel à la vitesse instantanée.
 2. **« VOITURE » derrière la berline.** Le texte passe sous la carrosserie, avec une parallaxe en sens opposé.
 3. **Zoom optique dans la roue.** La roue devient un cadran (120 graduations, texte circulaire). Un reflet balaie la jante, et cette même lumière révèle « préparée. ».
-4. **MONTRÉAL → MTL, LAVAL → LAV.** Les lettres se replient sur elles-mêmes.
-5. **La rivière qui devient la ligne du logo.** MAISON sort par-dessus la ligne, AUTOMOBILE par-dessous, puis un reflet spéculaire traverse les lettres.
+4. **Le Québec s'allume.** Le contour de la province se trace, puis une onde partie de Montréal l'allume point par point.
+5. **La province qui devient la ligne du logo.** La carte s'écrase en une ligne, qui monte sous le logo : les piliers en sortent, les arcs se dessinent, puis MAISON / AUTOMOBILE.
 
 ---
 
@@ -97,12 +99,11 @@ Chaque changement de scène tombe sur la grille du tempo : 120 BPM, 1 temps = 15
 | 11,1 s | **CHOISISSEZ.** |
 | 12,8 s | **ON COORDONNE.** · `VOTRE LIEU` · `VOTRE HORAIRE` |
 | 14,6 s | *prenez* · **LES CLÉS.** |
-| 16,0 s | **LAVAL** · **MONTRÉAL** |
-| 17,9 s | **LAV** / **MTL** |
-| 18,3 s | `REMISE COORDONNÉE` · *selon votre lieu et votre horaire.* |
+| 16,8 s | **PARTOUT / AU QUÉBEC.** (sur la carte) |
+| 17,7 s | `REMISE COORDONNÉE` · selon votre lieu et votre horaire. |
 | 21,5 s | **MAISON / AUTOMOBILE** |
 | 23,1 s | Votre voiture. · *Là où vous en avez besoin.* |
-| 23,7 s | `MONTRÉAL — LAVAL` |
+| 23,7 s | `PARTOUT AU QUÉBEC` |
 | 24,6 s | `maisonautomobile.ca` |
 
 Aucun repère de cadre, aucune coordonnée et aucun afficheur : le texte flotte sur des panneaux de verre (`src/components/Glass.tsx`).
@@ -125,7 +126,7 @@ Le script tient en peu de mots, avec des phrases nominales. Il est calé sur l'i
 | 11,1 s | Vous choisissez. | verrouillage du sélecteur (f362) |
 | 12,7 s | On coordonne. | « ON COORDONNE. » (f386) |
 | 14,5 s | Vous prenez les clés. | chute de la clé (f436) |
-| 16,0 s | Montréal. Laval. | coup sur MONTRÉAL (f480) |
+| 16,0 s | Partout au Québec. | tracé de la province (f480) |
 | 18,5 s | Selon votre lieu et votre horaire. | texte en graisse légère (f560) |
 | 21,5 s | Maison Automobile. | coup de marque (f645) |
 | 23,1 s | Votre voiture. Là où vous en avez besoin. | signature (f693) |
@@ -137,7 +138,7 @@ Le silence de 20,5 s à 21,5 s est volontaire. **Ne rien dire avant « Maison Au
 - **Voix :** français québécois neutre (pas d'accent parisien), timbre grave et chaud, proximité micro, ton confiant, presque confidentiel. Pas une voix « pub radio ».
 - **Réglages de départ :** Stability 0,50–0,60 · Similarity 0,80 · Style 0,15–0,25 · Speaker boost activé · vitesse ≈ 0,95.
 - **Méthode recommandée :** générer **chaque ligne séparément** (meilleur contrôle), puis les placer aux temps ci-dessus. Pour une prise unique, utiliser des pauses : `<break time="0.6s" />` entre les phrases, `<break time="1.2s" />` avant « Maison Automobile ».
-- **Prononciation :** « Maison Automobile » se dit lentement, avec un léger appui sur *Mai-* et *-mo-*. « Montréal. Laval. » se dit en deux impacts secs.
+- **Prononciation :** « Maison Automobile » se dit lentement, avec un léger appui sur *Mai-* et *-mo-*. « Partout au Québec. » se dit avec assurance.
 - **Intégration :** déposer le fichier dans `public/` puis le passer en prop `voiceover="vo.wav"`, ou l'ajouter dans `defaultProps` (`src/Root.tsx`). La musique laisse de la place : son pad reste sous 2 kHz et les médiums sont dégagés. Si la voix manque de présence, baisser la musique à environ 0,6 dans `LaunchFilm.tsx`.
 
 ---
@@ -178,7 +179,7 @@ Les effets sonores sont des one-shots placés à la frame (`src/lib/cues.ts`) :
 | Geist (variable, wght 100–900) | Google Fonts, OFL — `public/fonts/geist-var.woff2` |
 | Véhicules (compacte, berline, VUS), roues, clé | Vectoriels dessinés pour le film — `src/components/Vehicle.tsx`, `S3Process.tsx` |
 | Musique + 15 SFX | Générés — `scripts/generate_audio.py` → `public/audio/` |
-| Logo | Reconstruction typographique — `src/components/BrandLockup.tsx` |
+| Logo | SVG officiel fourni par le client — `public/brand/maison-automobile-logo.svg` |
 
 Aucune image stock et aucun asset tiers sous licence.
 
@@ -192,7 +193,7 @@ src/
   lib/cues.ts           feuille de sound design (frames)
   lib/anim.ts           ramp/keys (interpolate clampé), rand déterministe
   components/           Vehicle, KineticText (MaskRise, SlotRoll, TypeOn,
-                        FocusWords, Squeeze), BrandLockup, BeatImpact, Grain, Hud
+                        FocusWords, Squeeze), Logo, Glass, BeatImpact, Grain
   scenes/               S1Hook … S5Brand
 ```
 

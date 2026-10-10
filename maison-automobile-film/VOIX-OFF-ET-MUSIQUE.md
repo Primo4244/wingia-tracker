@@ -26,12 +26,12 @@ Le film est déjà prêt à recevoir la voix : il suffit de fournir **12 fichier
 | `06.mp3` | 11,1 s | Vous choisissez. | ~1,5 s |
 | `07.mp3` | 12,7 s | On coordonne. | ~1,5 s |
 | `08.mp3` | 14,5 s | Vous prenez les clés. | ~1,5 s |
-| `09.mp3` | 16,0 s | Montréal. Laval. | ~2 s |
+| `09.mp3` | 16,0 s | Partout au Québec. | ~2 s |
 | `10.mp3` | 18,5 s | Selon votre lieu et votre horaire. | ~2 s |
 | `11.mp3` | 21,5 s | Maison Automobile. | ~1,5 s |
 | `12.mp3` | 23,1 s | Votre voiture. Là où vous en avez besoin. | ~3 s |
 
-Si une réplique dépasse sa durée, la régénérer un peu plus vite plutôt que de la couper. « Maison Automobile » se dit lentement ; « Montréal. Laval. » en deux impacts secs.
+Si une réplique dépasse sa durée, la régénérer un peu plus vite plutôt que de la couper. « Maison Automobile » se dit lentement ; « Partout au Québec. » avec assurance, appui sur *Québec*.
 
 ### Me les envoyer
 

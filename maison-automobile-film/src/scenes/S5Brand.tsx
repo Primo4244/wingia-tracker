@@ -1,24 +1,39 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {BrandLockup} from '../components/BrandLockup';
 import {FocusWords} from '../components/KineticText';
-import {Glass} from '../components/Glass';
+import {Glass, GlassLabel} from '../components/Glass';
+import {Logo} from '../components/Logo';
 import {Vehicle} from '../components/Vehicle';
 import {ramp} from '../lib/anim';
 import {C, E, F} from '../lib/theme';
 import {BRAND_LINE_Y} from './S4City';
 
 /**
- * BRAND — silence, a line, the name. Then the promise, then the address.
- * The end card holds long enough to be remembered.
+ * BRAND — silence, a line, the logo. Then the territory, the promise, the address.
+ * The line left by the province (S4) rises to become the logo's baseline;
+ * the pillars grow out of it, the arcs are drawn, the wordmark settles.
  */
+const LOGO_W = 760;
+const K = LOGO_W / 480; // px per logo viewBox unit
+const CONTENT_TOP = 155 * K; // symbol top inside the svg
+const BASELINE = 344 * K; // pillar feet
+const CONTENT_H = (445 - 155) * K; // symbol + wordmark
+
 export const S5Brand: React.FC = () => {
 	const f = useCurrentFrame();
 
-	const lineW = 1080 - (1080 - 760) * ramp(f, [0, 16], [0, 1], E.expoOut);
-	const lift = ramp(f, [68, 98], [0, 1], E.inOut) * 150;
+	const lift = ramp(f, [68, 98], [0, 1], E.inOut) * 100;
+	const logoTop = 420 - lift; // top of the symbol, px
+	const svgTop = logoTop - CONTENT_TOP;
 	const push = 1 + ramp(f, [0, 195], [0, 0.025]);
 	const urlLine = ramp(f, [124, 140], [0, 1], E.expoOut);
+	const sheen = ramp(f, [0, 195], [0, 1]);
+
+	// the line from S4 travels up to the logo baseline and narrows to the pillars' feet
+	const lineP = ramp(f, [0, 24], [0, 1], E.inOut);
+	const lineY = BRAND_LINE_Y + (svgTop + BASELINE - BRAND_LINE_Y) * lineP;
+	const lineW = 1080 - (1080 - 420) * lineP;
+	const lineOp = 1 - ramp(f, [44, 58], [0, 1]);
 
 	return (
 		<AbsoluteFill style={{background: C.ink, overflow: 'hidden'}}>
@@ -28,80 +43,64 @@ export const S5Brand: React.FC = () => {
 					<Vehicle type="sedan" width={1700} draw={ramp(f, [10, 90], [0, 1], E.inOut)} lit={0} reflection={false} />
 				</div>
 
-				{/* the lockup floats on a glass panel */}
-				<Glass left={60} top={780 - lift} width={960} height={330} radius={60} shine={ramp(f, [0, 195], [0, 1])} opacity={ramp(f, [24, 40])} />
+				{/* the logo floats on a glass panel */}
+				<Glass left={150} top={logoTop - 64} width={780} height={CONTENT_H + 128} radius={64} shine={sheen} opacity={ramp(f, [26, 40])} />
 
-				<div style={{position: 'absolute', left: 0, top: BRAND_LINE_Y - 200 - lift}}>
-					<BrandLockup f={f} lineWidth={lineW} start={30} />
-				</div>
-
-				<Glass left={300} top={592 - lift} width={480} height={56} radius={28} shine={ramp(f, [0, 195], [0, 1])} opacity={ramp(f, [96, 108])} />
 				<div
 					style={{
 						position: 'absolute',
-						left: 0,
-						right: 0,
-						top: BRAND_LINE_Y - 350 - lift,
-						textAlign: 'center',
-						fontFamily: F.mono,
-						fontSize: 22,
-						letterSpacing: `${0.5 - 0.15 * ramp(f, [96, 140], [0, 1], E.expoOut)}em`,
-						color: C.stone,
-						opacity: ramp(f, [96, 108]),
+						left: 540 - lineW / 2,
+						top: lineY - 1,
+						width: lineW,
+						height: 2,
+						background: '#fff',
+						boxShadow: '0 0 14px rgba(255,255,255,0.45)',
+						opacity: lineOp,
 					}}
-				>
-					MONTRÉAL — LAVAL
+				/>
+
+				<div style={{position: 'absolute', left: 540 - LOGO_W / 2, top: svgTop}}>
+					<Logo f={f} start={30} width={LOGO_W} color={C.bone} />
 				</div>
 
-				<Glass left={80} top={1058} width={920} height={210} radius={56} shine={ramp(f, [0, 195], [0, 1])} opacity={ramp(f, [74, 88])} />
-				<div
-					style={{
-						position: 'absolute',
-						left: 0,
-						right: 0,
-						top: 1090,
-						textAlign: 'center',
-						fontFamily: F.serif,
-						fontSize: 64,
-						lineHeight: 1.12,
-						color: C.bone,
-					}}
-				>
-					<div>
+				<GlassLabel top={logoTop + CONTENT_H + 96} padding="12px 28px" radius={30} shine={sheen} opacity={ramp(f, [96, 108])}>
+					<div
+						style={{
+							fontFamily: F.mono,
+							fontWeight: 500,
+							fontSize: 24,
+							letterSpacing: `${0.3 - 0.2 * ramp(f, [96, 140], [0, 1], E.expoOut)}em`,
+							color: C.bone,
+						}}
+					>
+						PARTOUT AU QUÉBEC
+					</div>
+				</GlassLabel>
+
+				<GlassLabel top={940} padding="26px 56px 30px" radius={56} shine={sheen} opacity={ramp(f, [74, 88])}>
+					<div style={{fontFamily: F.serif, fontSize: 64, lineHeight: 1.12, color: C.bone}}>
 						<FocusWords text="Votre voiture." frame={f} start={78} />
 					</div>
-					<div style={{fontWeight: 400, color: C.stone}}>
+					<div style={{fontFamily: F.serif, fontSize: 64, lineHeight: 1.12, color: C.stone}}>
 						<FocusWords text="Là où vous en avez besoin." frame={f} start={90} stagger={3} />
 					</div>
-				</div>
+				</GlassLabel>
 
-				<Glass left={230} top={1362} width={620} height={108} radius={54} shine={ramp(f, [0, 195], [0, 1])} opacity={ramp(f, [120, 134])} />
-				<div
-					style={{
-						position: 'absolute',
-						left: 0,
-						right: 0,
-						top: 1390,
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'center',
-						gap: 14,
-					}}
-				>
+				<GlassLabel top={1230} padding="22px 44px 20px" radius={48} shine={sheen} opacity={ramp(f, [120, 134])}>
 					<div
 						style={{
 							fontFamily: F.mono,
 							fontWeight: 500,
 							fontSize: 40,
-							letterSpacing: '0.1em',
+							letterSpacing: '0.04em',
 							color: C.bone,
 							clipPath: `inset(0 ${(1 - urlLine) * 100}% 0 0)`,
 						}}
 					>
 						maisonautomobile.ca
 					</div>
-					<div style={{width: 470 * urlLine, height: 2, background: C.copper}} />
-				</div>
+					<div style={{width: 420 * urlLine, height: 2, marginTop: 10, background: C.copper}} />
+				</GlassLabel>
 			</AbsoluteFill>
 		</AbsoluteFill>
 	);

@@ -1,154 +1,144 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {GlassLabel} from '../components/Glass';
-import {Squeeze, TypeOn} from '../components/KineticText';
-import {keys, ramp} from '../lib/anim';
+import {MaskRise} from '../components/KineticText';
+import {ramp} from '../lib/anim';
+import {QC_ORIGIN, QC_PATHS} from '../lib/quebec';
 import {C, E, F, wide} from '../lib/theme';
 
 /**
- * TERRITORY — MONTRÉAL ↔ LAVAL as typography laid out like a map:
- * Laval on top (north), Rivière des Prairies, Montréal below.
- * The names fold into MTL / LAV, a copper route links them, and the
- * river straightens into the line that will carry the brand.
+ * TERRITORY — the province of Québec.
+ *   0–26    the outline is traced in light
+ *   10–80   from Montréal, a wave lights the province up, dot by dot
+ *   24–60   PARTOUT AU QUÉBEC. on glass over the map, then the delivery line
+ *   108–135 the province flattens into the line that carries the logo (S5)
  */
 
 export const BRAND_LINE_Y = 960;
-const RIVER_Y = 905;
 
-const riverPath = (amp: number, y: number) => {
-	const pts: string[] = [];
-	for (let x = -40; x <= 1120; x += 20) {
-		const yy = y + Math.sin(x / 120 + 0.6) * amp + Math.sin(x / 47) * amp * 0.25;
-		pts.push(`${x === -40 ? 'M' : 'L'} ${x} ${yy.toFixed(2)}`);
-	}
-	return pts.join(' ');
-};
+const DOT = 18; // dot-grid pitch, px
 
 export const S4City: React.FC = () => {
 	const f = useCurrentFrame();
 
-	const mtlX = keys(f, [0, 9], [520, 0], E.punch) - f * 0.35;
-	const lavX = keys(f, [7, 16], [-520, 0], E.punch) + f * 0.35;
-	const mtlBlur = ramp(f, [0, 9], [16, 0]);
-	const lavBlur = ramp(f, [7, 16], [16, 0]);
+	const outline = ramp(f, [0, 26], [0, 1], E.inOut);
+	const wave = ramp(f, [10, 80], [0, 1], E.quartOut);
+	const waveR = 40 + 1500 * wave;
+	const push = 1 + ramp(f, [0, 110], [0, 0.06], E.glide);
 
-	const exit = ramp(f, [118, 133], [0, 1], E.inOut);
-	const fade = 1 - ramp(f, [116, 126], [0, 1], E.accel);
+	const exit = ramp(f, [108, 130], [0, 1], E.inOut);
+	const flat = 1 - 0.996 * exit;
+	const copyOut = 1 - ramp(f, [104, 114], [0, 1]);
+	const handoff = ramp(f, [118, 132], [0, 1]);
 
-	const riverDraw = ramp(f, [12, 30], [0, 1], E.inOut);
-	const amp = 16 * (1 - exit);
-	const riverY = RIVER_Y + (BRAND_LINE_Y - RIVER_Y) * exit;
-
-	const route = ramp(f, [60, 76], [0, 1], E.inOut);
-	const travel = f > 76 ? 0.5 - 0.5 * Math.cos(((f - 76) / 30) * Math.PI) : 0;
-	const routeA = {x: 996, y: 1250}; // MTL
-	const routeB = {x: 996, y: 700}; // LAV
-	const routeD = `M ${routeA.x} ${routeA.y} C ${routeA.x + 40} ${routeA.y - 220}, ${routeB.x - 60} ${routeB.y + 220}, ${routeB.x} ${routeB.y}`;
-	const bez = (t: number) => {
-		const p0 = routeA;
-		const p1 = {x: routeA.x + 40, y: routeA.y - 220};
-		const p2 = {x: routeB.x - 60, y: routeB.y + 220};
-		const p3 = routeB;
-		const u = 1 - t;
-		return {
-			x: u * u * u * p0.x + 3 * u * u * t * p1.x + 3 * u * t * t * p2.x + t * t * t * p3.x,
-			y: u * u * u * p0.y + 3 * u * u * t * p1.y + 3 * u * t * t * p2.y + t * t * t * p3.y,
-		};
-	};
-	const car = bez(travel);
-	const beatPulse = Math.exp(-((f % 15) / 4));
-	const sheen = ramp(f, [0, 135], [0, 1]);
-
-	const nameStyle: React.CSSProperties = {
-		...wide(62, 900),
-		fontSize: 150,
-		lineHeight: 0.8,
-		letterSpacing: '-0.01em',
-		color: C.bone,
-		whiteSpace: 'nowrap',
-	};
+	// three soft pulses leave Montréal on the beat
+	const pulses = [10, 25, 40].map((at) => {
+		const p = ramp(f, [at, at + 45], [0, 1], E.quartOut);
+		return {r: 30 + 1300 * p, o: (1 - p) * (f >= at ? 0.9 : 0)};
+	});
+	const beat = Math.exp(-((f % 15) / 4));
 
 	return (
 		<AbsoluteFill style={{background: C.ink, overflow: 'hidden'}}>
-			{/* survey grid */}
 			<AbsoluteFill
 				style={{
-					opacity: 0.5 * fade,
-					backgroundImage:
-						'linear-gradient(90deg, rgba(238,233,224,0.06) 1px, transparent 1px), linear-gradient(0deg, rgba(238,233,224,0.06) 1px, transparent 1px)',
-					backgroundSize: '90px 90px',
-					backgroundPosition: `${-f * 0.6}px ${f * 0.3}px`,
+					transformOrigin: `540px ${BRAND_LINE_Y}px`,
+					transform: `scaleY(${flat})`,
 				}}
-			/>
+			>
+				<AbsoluteFill style={{transformOrigin: `${QC_ORIGIN.x}px ${QC_ORIGIN.y}px`, transform: `scale(${push})`}}>
+					<svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
+						<defs>
+							<clipPath id="qc-shape">
+								{QC_PATHS.map((d, i) => (
+									<path key={i} d={d} />
+								))}
+							</clipPath>
+							<pattern id="qc-dots" width={DOT} height={DOT} patternUnits="userSpaceOnUse">
+								<circle cx={DOT / 2} cy={DOT / 2} r={2.6} fill="#fff" />
+							</pattern>
+							<radialGradient id="qc-front" gradientUnits="userSpaceOnUse" cx={QC_ORIGIN.x} cy={QC_ORIGIN.y} r={waveR}>
+								<stop offset="0" stopColor="#fff" stopOpacity="0.55" />
+								<stop offset="0.82" stopColor="#fff" stopOpacity="0.3" />
+								<stop offset="0.97" stopColor="#fff" stopOpacity="1" />
+								<stop offset="1" stopColor="#fff" stopOpacity="0" />
+							</radialGradient>
+							<mask id="qc-wave" maskUnits="userSpaceOnUse" x={0} y={0} width={1080} height={1920}>
+								<circle cx={QC_ORIGIN.x} cy={QC_ORIGIN.y} r={waveR} fill="url(#qc-front)" />
+							</mask>
+							<filter id="qc-glow" x="-10%" y="-10%" width="120%" height="120%">
+								<feGaussianBlur stdDeviation="6" result="b" />
+								<feMerge>
+									<feMergeNode in="b" />
+									<feMergeNode in="SourceGraphic" />
+								</feMerge>
+							</filter>
+						</defs>
 
-			<AbsoluteFill style={{opacity: fade}}>
-				{/* LAVAL — north. The panel wraps the name, so it shrinks as LAVAL folds to LAV */}
-				<GlassLabel top={300} align="left" inset={50} padding="30px 40px 26px" radius={56} shine={sheen} transform={`translateX(${lavX}px)`}>
-					<div style={{...nameStyle, filter: lavBlur > 0.5 ? `blur(${lavBlur}px)` : undefined}}>
-						<Squeeze text="LAVAL" keep={[0, 1, 2]} frame={f} start={58} dur={12} charWidth={0.75} />
-					</div>
-				</GlassLabel>
+						{/* the province lights up, dot by dot, from Montréal outward */}
+						<g clipPath="url(#qc-shape)">
+							<rect x={0} y={0} width={1080} height={1920} fill="#fff" opacity={0.04 * outline} />
+							<rect x={0} y={0} width={1080} height={1920} fill="url(#qc-dots)" mask="url(#qc-wave)" opacity={0.85} />
+							{pulses.map((p, i) => (
+								<circle key={i} cx={QC_ORIGIN.x} cy={QC_ORIGIN.y} r={p.r} fill="none" stroke="#fff" strokeWidth={3} opacity={p.o * 0.6} />
+							))}
+						</g>
 
-				{/* MONTRÉAL — south */}
-				<GlassLabel top={1000} align="left" inset={50} padding="30px 40px 26px" radius={56} shine={sheen} transform={`translateX(${mtlX}px)`}>
-					<div style={{...nameStyle, filter: mtlBlur > 0.5 ? `blur(${mtlBlur}px)` : undefined}}>
-						<Squeeze text="MONTRÉAL" keep={[0, 3, 7]} frame={f} start={56} dur={12} charWidth={0.75} />
-					</div>
-				</GlassLabel>
-				<GlassLabel top={1226} align="left" inset={50} padding="12px 24px" radius={30} shine={sheen} opacity={ramp(f, [68, 74])}>
-					<div style={{fontFamily: F.mono, fontWeight: 500, fontSize: 24, letterSpacing: '0.08em', color: C.bone}}>
-						<TypeOn text="REMISE COORDONNÉE" frame={f} start={70} cps={1.2} cursorColor={C.bone} />
-					</div>
-				</GlassLabel>
+						{/* the outline, traced in light */}
+						<g filter="url(#qc-glow)">
+							{QC_PATHS.map((d, i) => (
+								<path
+									key={i}
+									d={d}
+									fill="none"
+									stroke="#fff"
+									strokeWidth={2.5 + 2 * exit}
+									strokeLinejoin="round"
+									pathLength={1}
+									strokeDasharray={`${outline} 1`}
+								/>
+							))}
+						</g>
 
-				{/* copy, right column — appears once the names have folded */}
-				<GlassLabel top={300} align="right" inset={50} padding="26px 40px 30px" radius={52} shine={sheen} opacity={ramp(f, [76, 86])}>
-					<div style={{fontFamily: F.serif, fontWeight: 300, fontSize: 62, lineHeight: 1.1, color: C.bone}}>
-						{['selon votre', 'lieu et', 'votre horaire.'].map((l, i) => (
-							<div key={i} style={{overflow: 'hidden'}}>
-								<div style={{transform: `translateY(${(1 - ramp(f, [80 + i * 5, 94 + i * 5], [0, 1], E.expoOut)) * 105}%)`}}>{l}</div>
-							</div>
-						))}
-					</div>
-				</GlassLabel>
+						{/* the origin: Montréal / Laval */}
+						<g opacity={ramp(f, [2, 8])}>
+							<circle cx={QC_ORIGIN.x} cy={QC_ORIGIN.y} r={10 + beat * 12} fill="#fff" opacity={0.18 * beat} />
+							<circle cx={QC_ORIGIN.x} cy={QC_ORIGIN.y} r={8} fill="#fff" />
+						</g>
+					</svg>
+				</AbsoluteFill>
 			</AbsoluteFill>
 
-			<svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
-				{/* river → becomes the brand line */}
-				<path
-					d={riverPath(amp, riverY)}
-					fill="none"
-					stroke={exit > 0 ? '#fff' : C.stone}
-					strokeOpacity={0.55 + 0.45 * exit}
-					strokeWidth={2 + exit * 0.5}
-					pathLength={1}
-					strokeDasharray={`${riverDraw} 1`}
-				/>
-				<g opacity={fade}>
-					{/* route */}
-					<path d={routeD} fill="none" stroke={C.copper} strokeWidth={3} pathLength={1} strokeDasharray={`${route} 1`} />
-					<path d={routeD} fill="none" stroke={C.copper} strokeWidth={1} strokeOpacity={0.4} strokeDasharray="4 10" />
-					{[routeA, routeB].map((p, i) => {
-						const s = ramp(f, [58 + i * 14, 68 + i * 14], [0, 1], E.backOut);
-						return (
-							<g key={i} transform={`translate(${p.x} ${p.y}) scale(${s})`}>
-								<circle r={20} fill="none" stroke={C.copper} strokeWidth={2} />
-								<line x1={-34} x2={-24} stroke={C.copper} strokeWidth={2} />
-								<line x1={24} x2={34} stroke={C.copper} strokeWidth={2} />
-								<line y1={-34} y2={-24} stroke={C.copper} strokeWidth={2} />
-								<line y1={24} y2={34} stroke={C.copper} strokeWidth={2} />
-							</g>
-						);
-					})}
-					{f > 76 && (
-						<g transform={`translate(${car.x} ${car.y})`}>
-							<circle r={10 + beatPulse * 14} fill={C.copper} opacity={0.18 * beatPulse} />
-							<circle r={9} fill={C.copperHot} />
-						</g>
-					)}
-				</g>
-			</svg>
+			{/* the claim, on glass over the lit map */}
+			<GlassLabel top={600} padding="34px 64px 38px" radius={60} shine={ramp(f, [0, 135], [0, 1])} opacity={ramp(f, [22, 30]) * copyOut}>
+				<div style={{...wide(100, 860), fontSize: 132, lineHeight: 0.98, letterSpacing: '-0.03em', color: C.bone}}>
+					<MaskRise text="PARTOUT" frame={f} start={24} dur={12} stagger={1.1} />
+				</div>
+				<div style={{...wide(100, 860), fontSize: 132, lineHeight: 0.98, letterSpacing: '-0.03em', color: C.bone}}>
+					<MaskRise text="AU QUÉBEC." frame={f} start={30} dur={12} stagger={1.1} />
+				</div>
+			</GlassLabel>
 
+			<GlassLabel top={1080} padding="22px 44px 26px" radius={48} shine={ramp(f, [0, 135], [0, 1])} opacity={ramp(f, [50, 60]) * copyOut}>
+				<div style={{fontFamily: F.mono, fontWeight: 500, fontSize: 26, letterSpacing: '0.08em', color: C.bone}}>REMISE COORDONNÉE</div>
+				<div style={{fontFamily: F.serif, fontWeight: 300, fontSize: 48, lineHeight: 1.15, color: C.stone, marginTop: 6}}>
+					selon votre lieu et votre horaire.
+				</div>
+			</GlassLabel>
+
+			{/* handoff: a single line at the brand height, picked up by S5 */}
+			<div
+				style={{
+					position: 'absolute',
+					left: 0,
+					top: BRAND_LINE_Y - 1,
+					width: 1080,
+					height: 2,
+					background: '#fff',
+					boxShadow: '0 0 14px rgba(255,255,255,0.45)',
+					opacity: handoff,
+				}}
+			/>
 		</AbsoluteFill>
 	);
 };
