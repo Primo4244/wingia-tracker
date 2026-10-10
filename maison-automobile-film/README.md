@@ -90,7 +90,7 @@ Chaque changement de scène tombe sur la grille du tempo : 120 BPM, 1 temps = 15
 
 | Temps | Texte |
 |---|---|
-| 0,0 s | `047` · `VOTRE NUMÉRO` · tickets `048 049 050…` |
+| 0,0 s | *(fond : poteaux et sangles de file d'attente en perspective)* |
 | 0,1 s | **PAS DE / COMPTOIR.** |
 | 1,1 s | **PAS DE / FILE.** |
 | 3,6 s | *la bonne* · **VOITURE** |

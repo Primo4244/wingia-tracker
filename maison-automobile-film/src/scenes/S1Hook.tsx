@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {GlassLabel} from '../components/Glass';
+import {QueueBarriers} from '../components/QueueBarriers';
 import {Vehicle} from '../components/Vehicle';
 import {keys, ramp} from '../lib/anim';
 import {C, E, F, wide} from '../lib/theme';
@@ -49,7 +50,6 @@ export const S1Hook: React.FC = () => {
 	const rearX = left + 34 * CAR_SCALE;
 
 	const punch = ramp(frame, [0, 8], [1.07, 1], E.expoOut);
-	const coldDrift = frame * 0.6;
 
 	const lineIn = ramp(frame, [PASS[0] + 8, PASS[1]], [0, 1]);
 
@@ -60,54 +60,8 @@ export const S1Hook: React.FC = () => {
 				<AbsoluteFill
 					style={{background: 'linear-gradient(180deg, #E8EBEC 0%, #D7DCDE 60%, #CDD3D6 100%)'}}
 				/>
-				{/* giant ticket number, centred, drifting */}
-				<div
-					style={{
-						position: 'absolute',
-						left: 0,
-						right: 0,
-						top: 270,
-						textAlign: 'center',
-						...wide(62, 800),
-						fontSize: 520,
-						lineHeight: 0.8,
-						letterSpacing: '-0.04em',
-						color: C.coldDeep,
-						transform: `translateX(${-coldDrift}px)`,
-					}}
-				>
-					047
-				</div>
-				<GlassLabel top={196} tone="light" padding="14px 30px" radius={40} shine={ramp(frame, [0, 54], [0, 1], E.glide)}>
-					<div style={{fontFamily: F.mono, fontWeight: 500, fontSize: 26, letterSpacing: '0.08em', color: C.coldInk}}>VOTRE NUMÉRO</div>
-				</GlassLabel>
-
-				{/* the queue — tickets crawling, going nowhere */}
-				<div
-					style={{
-						position: 'absolute',
-						top: 836,
-						left: 84 - frame * 1.4,
-						display: 'flex',
-						gap: 14,
-					}}
-				>
-					{Array.from({length: 14}).map((_, i) => (
-						<div
-							key={i}
-							style={{
-								border: `2px solid ${C.coldInk}`,
-								opacity: 0.32 - i * 0.012,
-								padding: '8px 14px',
-								fontFamily: F.mono,
-								fontSize: 28,
-								color: C.coldInk,
-							}}
-						>
-							{String(48 + i).padStart(3, '0')}
-						</div>
-					))}
-				</div>
+				{/* the queue: rows of barrier posts and belts, going nowhere */}
+				<QueueBarriers frame={frame} />
 
 				{/* the line — on glass; the panel grows when the second line lands */}
 				<GlassLabel top={940} tone="light" padding="48px 60px" radius={60} shine={ramp(frame, [0, 54], [0, 1], E.glide)}>
