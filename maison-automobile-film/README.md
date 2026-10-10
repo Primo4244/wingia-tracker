@@ -24,7 +24,9 @@ npm run studio   # Remotion Studio
 npm run render   # rendu + mastering loudness → out/maison-automobile-launch-film-v1.mp4
 ```
 
-Le rendu utilise le Chromium local (`/opt/pw-browsers/...`). Pour en utiliser un autre, définir `REMOTION_BROWSER=/chemin/vers/chrome`.
+Dans le conteneur cloud, le rendu utilise le Chromium installé (`/opt/pw-browsers/...`). Ailleurs, Remotion télécharge son propre navigateur au premier rendu ; `REMOTION_BROWSER=/chemin/vers/chrome` force un navigateur précis.
+
+**Sous Windows :** installer Node.js 20+, ffmpeg (dans le PATH) et Git for Windows. Lancer `npm install` puis `npm run render` depuis **Git Bash** : l'étape de mastering (`scripts/master.sh`) est un script bash.
 
 ---
 
