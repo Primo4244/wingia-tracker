@@ -21,6 +21,7 @@ Le film est déjà prêt à recevoir la voix : il suffit de fournir **12 fichier
 | `01.mp3` | 0,1 s | Pas de comptoir. | ~1 s |
 | `02.mp3` | 1,1 s | Pas de file. | ~1 s |
 | `03.mp3` | 3,5 s | Juste la bonne voiture. | ~2 s |
+| `13.mp3` | 5,6 s | De l'accessible au premium. | ~2,2 s |
 | `04.mp3` | 8,8 s | Sélectionnée. | ~1 s |
 | `05.mp3` | 9,8 s | Préparée. | ~1 s |
 | `06.mp3` | 11,1 s | Vous choisissez. | ~1,5 s |

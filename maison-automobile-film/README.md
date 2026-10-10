@@ -123,6 +123,7 @@ Le script tient en peu de mots, avec des phrases nominales. Il est calé sur l'i
 | 0,1 s | Pas de comptoir. | « COMPTOIR. » (f8) |
 | 1,1 s | Pas de file. | « FILE. » (f39) |
 | 3,5 s | Juste la bonne voiture. | tracé lumière de la berline |
+| 5,6 s | De l'accessible au premium. | « DE L'ACCESSIBLE » / « AU PREMIUM. » (f168) |
 | 8,8 s | Sélectionnée. | « SÉLECTIONNÉE. » (f272) |
 | 9,8 s | Préparée. | reflet sur la jante (f294) |
 | 11,1 s | Vous choisissez. | verrouillage du sélecteur (f362) |

@@ -9,6 +9,7 @@ export const VO_LINES: Array<{file: string; at: number; dur: number; text: strin
 	{file: '01.wav', at: 2, dur: 35, text: 'Pas de comptoir.'},
 	{file: '02.wav', at: 37, dur: 28, text: 'Pas de file.'},
 	{file: '03.wav', at: 105, dur: 48, text: 'Juste la bonne voiture.'},
+	{file: '13.wav', at: 168, dur: 67, text: "De l'accessible au premium."},
 	{file: '04.wav', at: 264, dur: 28, text: 'Sélectionnée.'},
 	{file: '05.wav', at: 294, dur: 24, text: 'Préparée.'},
 	{file: '06.wav', at: 333, dur: 36, text: 'Vous choisissez.'},
