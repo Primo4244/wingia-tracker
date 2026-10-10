@@ -1,8 +1,8 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {Hud} from '../components/Hud';
+import {Glass} from '../components/Glass';
 import {Squeeze, TypeOn} from '../components/KineticText';
-import {keys, ramp, rand} from '../lib/anim';
+import {keys, ramp} from '../lib/anim';
 import {C, E, F, wide} from '../lib/theme';
 
 /**
@@ -14,26 +14,6 @@ import {C, E, F, wide} from '../lib/theme';
 
 export const BRAND_LINE_Y = 960;
 const RIVER_Y = 905;
-
-/** digits roll then lock left → right */
-const Coord: React.FC<{text: string; f: number; start: number}> = ({text, f, start}) => {
-	let k = 0;
-	return (
-		<span>
-			{text.split('').map((ch, i) => {
-				const isDigit = /\d/.test(ch);
-				if (!isDigit) return <span key={i}>{f < start ? ' ' : ch}</span>;
-				const lockAt = start + 6 + k++ * 1.2;
-				const shown = f < start ? ' ' : f < lockAt ? String(Math.floor(rand(i * 13 + f * 3) * 10)) : ch;
-				return (
-					<span key={i} style={{opacity: f < lockAt ? 0.5 : 1}}>
-						{shown}
-					</span>
-				);
-			})}
-		</span>
-	);
-};
 
 const riverPath = (amp: number, y: number) => {
 	const pts: string[] = [];
@@ -101,20 +81,16 @@ export const S4City: React.FC = () => {
 			/>
 
 			<AbsoluteFill style={{opacity: fade}}>
-				{/* LAVAL — north */}
+				{/* LAVAL — north, on glass */}
+				<Glass left={36 + lavX} top={300} width={780} height={262} radius={56} shine={ramp(f, [0, 135], [0, 1])} />
 				<div style={{position: 'absolute', left: 56 + lavX, top: 330, filter: lavBlur > 0.5 ? `blur(${lavBlur}px)` : undefined, ...nameStyle}}>
 					<Squeeze text="LAVAL" keep={[0, 1, 2]} frame={f} start={58} dur={12} charWidth={0.75} />
 				</div>
-				<div style={{position: 'absolute', left: 64, top: 600, fontFamily: F.mono, fontSize: 28, letterSpacing: '0.12em', color: C.stone}}>
-					<Coord text="45.6066° N   73.7124° O" f={f} start={14} />
-				</div>
 
-				{/* MONTRÉAL — south */}
+				{/* MONTRÉAL — south, on glass */}
+				<Glass left={40 + mtlX} top={966} width={1000} height={262} radius={56} shine={ramp(f, [0, 135], [0, 1])} />
 				<div style={{position: 'absolute', left: 46 + mtlX, top: 1000, filter: mtlBlur > 0.5 ? `blur(${mtlBlur}px)` : undefined, ...nameStyle}}>
 					<Squeeze text="MONTRÉAL" keep={[0, 3, 7]} frame={f} start={56} dur={12} charWidth={0.75} />
-				</div>
-				<div style={{position: 'absolute', left: 64, top: 1240, fontFamily: F.mono, fontSize: 28, letterSpacing: '0.12em', color: C.stone}}>
-					<Coord text="45.5019° N   73.5674° O" f={f} start={6} />
 				</div>
 
 				{/* river label */}
@@ -123,6 +99,7 @@ export const S4City: React.FC = () => {
 				</div>
 
 				{/* copy, right column — appears once names have folded */}
+				<Glass left={530} top={372} width={500} height={300} radius={56} shine={ramp(f, [0, 135], [0, 1])} opacity={ramp(f, [78, 92])} />
 				<div style={{position: 'absolute', left: 560, top: 1040, color: C.bone}}>
 					<div style={{fontFamily: F.mono, fontSize: 24, letterSpacing: '0.24em', color: C.copper}}>
 						<TypeOn text="REMISE COORDONNÉE" frame={f} start={70} cps={1.2} cursorColor={C.copper} />
@@ -184,7 +161,6 @@ export const S4City: React.FC = () => {
 				</g>
 			</svg>
 
-			<Hud color={C.bone} right="N° 04 — LE TERRITOIRE" opacity={0.45 * fade} />
 		</AbsoluteFill>
 	);
 };

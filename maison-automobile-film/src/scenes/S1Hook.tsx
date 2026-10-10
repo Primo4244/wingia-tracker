@@ -1,5 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
+import {Glass} from '../components/Glass';
 import {Vehicle} from '../components/Vehicle';
 import {keys, ramp} from '../lib/anim';
 import {C, E, F, wide} from '../lib/theme';
@@ -47,8 +48,6 @@ export const S1Hook: React.FC = () => {
 	const vel = Math.abs(carLeftAt(frame + 0.5) - carLeftAt(frame - 0.5));
 	const rearX = left + 34 * CAR_SCALE;
 
-	const serving = frame < 22 ? '012' : '013';
-	const ledFlash = frame >= 22 && frame < 34 && Math.floor((frame - 22) / 3) % 2 === 0;
 	const punch = ramp(frame, [0, 8], [1.07, 1], E.expoOut);
 	const coldDrift = frame * 0.6;
 
@@ -76,6 +75,7 @@ export const S1Hook: React.FC = () => {
 				>
 					047
 				</div>
+				<Glass left={64} top={226} width={352} height={70} radius={35} tone="light" shine={ramp(frame, [0, 54], [0, 1], E.glide)} />
 				<div
 					style={{
 						position: 'absolute',
@@ -89,37 +89,6 @@ export const S1Hook: React.FC = () => {
 					}}
 				>
 					VOTRE NUMÉRO
-				</div>
-
-				{/* now-serving LED */}
-				<div
-					style={{
-						position: 'absolute',
-						right: 84,
-						top: 236,
-						display: 'flex',
-						flexDirection: 'column',
-						alignItems: 'flex-end',
-						gap: 10,
-					}}
-				>
-					<div style={{fontFamily: F.mono, fontSize: 22, letterSpacing: '0.2em', color: C.coldInk, opacity: 0.7}}>
-						EN SERVICE
-					</div>
-					<div
-						style={{
-							background: '#16191B',
-							padding: '10px 18px 6px',
-							fontFamily: F.mono,
-							fontWeight: 500,
-							fontSize: 64,
-							letterSpacing: '0.08em',
-							color: ledFlash ? '#FF6A55' : C.ledRed,
-							textShadow: `0 0 ${ledFlash ? 18 : 8}px rgba(226,59,46,0.55)`,
-						}}
-					>
-						{serving}
-					</div>
 				</div>
 
 				{/* the queue — tickets crawling, going nowhere */}
@@ -149,14 +118,15 @@ export const S1Hook: React.FC = () => {
 					))}
 				</div>
 
-				{/* the line */}
+				{/* the line — floats on a glass panel */}
+				<Glass left={40} top={918} width={1000} height={640} radius={60} tone="light" shine={ramp(frame, [0, 54], [0, 1], E.glide)} />
 				<div
 					style={{
 						position: 'absolute',
 						left: 84,
 						top: 960,
 						...wide(108, 860),
-						fontSize: 150,
+						fontSize: 136,
 						lineHeight: 0.92,
 						letterSpacing: '-0.025em',
 						color: C.coldInk,

@@ -2,6 +2,7 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {BrandLockup} from '../components/BrandLockup';
 import {FocusWords} from '../components/KineticText';
+import {Glass} from '../components/Glass';
 import {Vehicle} from '../components/Vehicle';
 import {ramp} from '../lib/anim';
 import {C, E, F} from '../lib/theme';
@@ -27,10 +28,14 @@ export const S5Brand: React.FC = () => {
 					<Vehicle type="sedan" width={1700} draw={ramp(f, [10, 90], [0, 1], E.inOut)} lit={0} reflection={false} />
 				</div>
 
+				{/* the lockup floats on a glass panel */}
+				<Glass left={60} top={780 - lift} width={960} height={330} radius={60} shine={ramp(f, [0, 195], [0, 1])} opacity={ramp(f, [24, 40])} />
+
 				<div style={{position: 'absolute', left: 0, top: BRAND_LINE_Y - 200 - lift}}>
 					<BrandLockup f={f} lineWidth={lineW} start={30} />
 				</div>
 
+				<Glass left={300} top={592 - lift} width={480} height={56} radius={28} shine={ramp(f, [0, 195], [0, 1])} opacity={ramp(f, [96, 108])} />
 				<div
 					style={{
 						position: 'absolute',
@@ -48,6 +53,7 @@ export const S5Brand: React.FC = () => {
 					MONTRÉAL — LAVAL
 				</div>
 
+				<Glass left={110} top={1058} width={860} height={240} radius={56} shine={ramp(f, [0, 195], [0, 1])} opacity={ramp(f, [74, 88])} />
 				<div
 					style={{
 						position: 'absolute',
@@ -69,6 +75,7 @@ export const S5Brand: React.FC = () => {
 					</div>
 				</div>
 
+				<Glass left={230} top={1362} width={620} height={108} radius={54} shine={ramp(f, [0, 195], [0, 1])} opacity={ramp(f, [120, 134])} />
 				<div
 					style={{
 						position: 'absolute',

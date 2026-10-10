@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {Hud} from '../components/Hud';
+import {Glass} from '../components/Glass';
 import {MaskRise} from '../components/KineticText';
 import {Vehicle} from '../components/Vehicle';
 import {keys, ramp} from '../lib/anim';
@@ -34,6 +34,9 @@ const Reveal: React.FC<{f: number}> = ({f}) => {
 					background: `radial-gradient(70% 28% at 50% ${Y_LINE + 110}px, rgba(255,255,255,${0.07 * lit}) 0%, rgba(0,0,0,0) 70%)`,
 				}}
 			/>
+			{/* glass behind the headline pair — the car body still passes over it */}
+			<Glass left={40} top={744} width={640} height={226} radius={56} shine={ramp(f, [0, A_END], [0, 1])} opacity={ramp(f, [20, 32])} />
+			<Glass left={20} top={968} width={1040} height={230} radius={56} shine={ramp(f, [0, A_END], [0, 1])} opacity={ramp(f, [8, 16])} />
 			{/* VOITURE — sits behind the car body */}
 			<div
 				style={{
@@ -43,7 +46,7 @@ const Reveal: React.FC<{f: number}> = ({f}) => {
 					top: 985,
 					textAlign: 'center',
 					...wide(112, 840),
-					fontSize: 206,
+					fontSize: 176,
 					lineHeight: 1,
 					color: C.bone,
 					letterSpacing: `${(1 - textIn) * 0.5 - 0.02}em`,
@@ -242,7 +245,9 @@ const Fleet: React.FC<{f: number}> = ({f}) => {
 					}}
 				/>
 			))}
-			{/* copy */}
+			{/* copy — on glass */}
+			<Glass left={40} top={206 - 660 * collapse} width={960} height={156} radius={56} shine={ramp(f, [A_END, 150], [0, 1])} opacity={ramp(f, [84, 96])} />
+			<Glass left={320} top={1290 + 660 * collapse} width={720} height={156} radius={56} shine={ramp(f, [A_END, 150], [0, 1])} opacity={ramp(f, [102, 114])} />
 			<div
 				style={{
 					position: 'absolute',
@@ -337,6 +342,7 @@ const Dial: React.FC<{f: number}> = ({f}) => {
 					</g>
 				)}
 			</svg>
+			<Glass left={70} top={226} width={940} height={172} radius={56} shine={ramp(f, [176, 226], [0, 1])} opacity={ramp(f, [182, 188])} />
 			{/* SÉLECTIONNÉE. — tracking compress */}
 			<div
 				style={{
@@ -355,6 +361,7 @@ const Dial: React.FC<{f: number}> = ({f}) => {
 			>
 				SÉLECTIONNÉE.
 			</div>
+			<Glass left={230} top={1262} width={620} height={276} radius={56} shine={ramp(f, [204, 226], [0, 1])} opacity={ramp(f, [212, 222])} />
 			{/* préparée. — revealed by the same light that polishes the rim */}
 			<div
 				style={{
@@ -403,7 +410,6 @@ export const S2Desire: React.FC = () => {
 					)}
 				</AbsoluteFill>
 			)}
-			<Hud color={C.bone} right={f < A_END ? 'N° 01 — LA FLOTTE' : f < B_END ? 'N° 01 — LA FLOTTE' : 'N° 02 — LA PRÉPARATION'} opacity={0.45 * (1 - exit)} />
 		</AbsoluteFill>
 	);
 };

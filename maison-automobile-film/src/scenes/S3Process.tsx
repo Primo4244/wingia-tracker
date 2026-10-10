@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
-import {Hud} from '../components/Hud';
+import {Glass} from '../components/Glass';
 import {MaskRise, SlotRoll} from '../components/KineticText';
 import {Vehicle} from '../components/Vehicle';
 import {keys, ramp} from '../lib/anim';
@@ -19,12 +19,6 @@ const ORDER: Array<'sedan' | 'suv' | 'compact'> = ['suv', 'compact', 'sedan', 's
 const TARGET = 5;
 
 const stripX = (f: number) => keys(f, [0, 40], [540 - TARGET * CARD + 4600, 540 - TARGET * CARD], E.expoOut);
-
-const Corner: React.FC<{x: number; y: number; sx: number; sy: number; len?: number}> = ({x, y, sx, sy, len = 64}) => (
-	<g transform={`translate(${x} ${y}) scale(${sx} ${sy})`}>
-		<path d={`M 0 ${len} L 0 0 L ${len} 0`} fill="none" stroke={C.ink} strokeWidth={5} />
-	</g>
-);
 
 const Key: React.FC<{lit: number}> = ({lit}) => (
 	<svg width={260} height={420} viewBox="0 0 260 420" style={{overflow: 'visible'}}>
@@ -92,6 +86,12 @@ export const S3Process: React.FC = () => {
 	const phaseB = f >= 45 && f < 105;
 	const phaseC = f >= 105;
 
+	/* selector bracket → glass panel: it locks around the chosen car, then flattens into the timeline */
+	const gScale = 1.35 - 0.35 * lock;
+	const gW = 2 * halfW * gScale;
+	const gH = 2 * halfH * gScale;
+	const shine = ramp(f, [0, 150], [0, 1], E.glide);
+
 	return (
 		<AbsoluteFill style={{background: C.ink, overflow: 'hidden'}}>
 			<AbsoluteFill style={{background: C.bone, clipPath: `circle(${iris}px at 540px 960px)`}}>
@@ -146,16 +146,11 @@ export const S3Process: React.FC = () => {
 								);
 							})}
 						</div>
+						{f >= 30 && (
+							<Glass tone="light" left={540 - gW / 2} top={LINE_Y - gH / 2} width={gW} height={gH} radius={Math.min(52, gH / 2)} shine={shine} opacity={ramp(f, [30, 33])} />
+						)}
 						<svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
-							{f >= 30 && (
-								<g transform={`translate(540 ${LINE_Y}) scale(${1.35 - 0.35 * lock})`} opacity={ramp(f, [30, 33])}>
-									<Corner x={-halfW} y={-halfH} sx={1} sy={1} />
-									<Corner x={halfW} y={-halfH} sx={-1} sy={1} />
-									<Corner x={-halfW} y={halfH} sx={1} sy={-1} />
-									<Corner x={halfW} y={halfH} sx={-1} sy={-1} />
-								</g>
-							)}
-							{phaseB && (
+								{phaseB && (
 								<g>
 									{/* the timeline */}
 									<line
@@ -207,6 +202,9 @@ export const S3Process: React.FC = () => {
 
 				{/* CHOISISSEZ. */}
 				{phaseA && (
+					<Glass tone="light" left={70} top={520} width={940} height={150} radius={56} shine={shine} />
+				)}
+				{phaseA && (
 					<div
 						style={{
 							position: 'absolute',
@@ -225,6 +223,9 @@ export const S3Process: React.FC = () => {
 				)}
 
 				{/* ON COORDONNE. — rises out of the timeline */}
+				{phaseB && (
+					<Glass tone="light" left={70} top={620} width={940} height={170} radius={56} shine={shine} />
+				)}
 				{phaseB && (
 					<div
 						style={{
@@ -274,6 +275,7 @@ export const S3Process: React.FC = () => {
 								<Key lit={ramp(f, [112, 140], [0, 1], E.inOut)} />
 							</div>
 						</div>
+						<Glass tone="light" left={50} top={1130} width={980} height={380} radius={60} shine={shine} />
 						<div
 							style={{
 								position: 'absolute',
@@ -304,7 +306,6 @@ export const S3Process: React.FC = () => {
 						</div>
 					</>
 				)}
-				<Hud color={C.ink} right={phaseC ? 'N° 03 — LA REMISE' : 'N° 03 — LA REMISE'} opacity={0.4} />
 			</AbsoluteFill>
 
 			{/* exit: an ink panel rises like a garage door closing upward */}

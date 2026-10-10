@@ -1,4 +1,6 @@
-# Maison Automobile — Launch Film v1
+# Maison Automobile — Launch Film v2 (en cours)
+
+> **v2 — étape 1 :** interface en verre (panneaux semi-transparents, flou, bordure fine, reflet mobile). Retrait du HUD, de l'afficheur et des coordonnées répétées. Étapes 2 à 4 (logo SVG, vraies voitures, voix off) en attente d'assets.
 
 Film de lancement vertical (Reels / TikTok / Meta Ads), construit dans Remotion.
 
@@ -80,7 +82,7 @@ Chaque changement de scène tombe sur la grille du tempo : 120 BPM, 1 temps = 15
 
 | Temps | Texte |
 |---|---|
-| 0,0 s | `047` · `VOTRE NUMÉRO` · `EN SERVICE` `012` → `013` · tickets `048 049 050…` |
+| 0,0 s | `047` · `VOTRE NUMÉRO` · tickets `048 049 050…` |
 | 0,1 s | **PAS DE / COMPTOIR.** |
 | 1,1 s | **PAS DE / FILE.** |
 | 3,6 s | *la bonne* · **VOITURE** |
@@ -91,7 +93,7 @@ Chaque changement de scène tombe sur la grille du tempo : 120 BPM, 1 temps = 15
 | 11,1 s | **CHOISISSEZ.** |
 | 12,8 s | **ON COORDONNE.** · `VOTRE LIEU` · `VOTRE HORAIRE` |
 | 14,6 s | *prenez* · **LES CLÉS.** |
-| 16,0 s | **LAVAL** `45.6066° N 73.7124° O` · `RIVIÈRE DES PRAIRIES` · **MONTRÉAL** `45.5019° N 73.5674° O` |
+| 16,0 s | **LAVAL** · `RIVIÈRE DES PRAIRIES` · **MONTRÉAL** |
 | 17,9 s | **LAV** / **MTL** |
 | 18,3 s | `REMISE COORDONNÉE` · *selon votre lieu et votre horaire.* |
 | 21,5 s | **MAISON / AUTOMOBILE** |
@@ -99,7 +101,7 @@ Chaque changement de scène tombe sur la grille du tempo : 120 BPM, 1 temps = 15
 | 23,7 s | `MONTRÉAL — LAVAL` |
 | 24,6 s | `maisonautomobile.ca` |
 
-Mobilier éditorial discret en haut de cadre : `MAISON AUTOMOBILE` et un index (`N° 01 — LA FLOTTE`, `N° 02 — LA PRÉPARATION`, `N° 03 — LA REMISE`, `N° 04 — LE TERRITOIRE`).
+Aucun repère de cadre, aucune coordonnée et aucun afficheur : le texte flotte sur des panneaux de verre (`src/components/Glass.tsx`).
 
 Le texte essentiel reste au-dessus de y ≈ 1500 px, hors des zones couvertes par l'interface Reels / TikTok.
 
