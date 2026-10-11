@@ -4,6 +4,7 @@
  */
 export const PRODUCTS = {
   alphaSv: { name: "Arc'teryx Alpha SV Jacket", image: 'products/alpha-sv.png', price: 279.99 },
+  toque: { name: "Arc'teryx Bird Toque", colour: 'Powder Pink', image: 'products/toque-pink.png', price: 39.99 },
   gridFleece: { name: "Arc'teryx Grid Fleece Half-Zip", image: 'products/grid-fleece.png', price: 79.99 },
   macai: { name: "Arc'teryx Macai Jacket", image: 'products/macai.png', price: 369.99 },
 } as const;

@@ -13,7 +13,7 @@ export const WHITEOUT_FRAMES = 90;
 /**
  * ark-scene "whiteout" (light tone): the fog builds to the middle of the scene (0.1 → 0.9) and
  * thins again (→ 0.3), the horizon disappears into it, the title rises 30% and fades in over
- * 1.4 s, and the mid layer stands in front of the fog.
+ * 1.4 s, and the last layer (the pink Bird toque) stands in front of the fog.
  */
 export const Whiteout: React.FC = () => {
   const frame = useCurrentFrame();
@@ -83,17 +83,18 @@ export const Whiteout: React.FC = () => {
         distance={32}
         style={{ position: 'absolute', left: SAFE.left, top: 520, width: 800, color: C.night }}
       >
-        <p style={{ ...textStyle, fontSize: 48, lineHeight: 1.3 }}>When the horizon disappears, the mid layer keeps you moving.</p>
+        <p style={{ ...textStyle, fontSize: 52, lineHeight: 1.3 }}>The last layer, on top.</p>
       </Reveal>
 
       <div style={{ position: 'absolute', left: (1080 - 560) / 2, top: 740, transform: `translateY(${(6 - 12 * p) * 6}px)` }}>
         <ProductTile
-          src={PRODUCTS.gridFleece.image}
-          name={PRODUCTS.gridFleece.name}
-          price={formatPrice(PRODUCTS.gridFleece.price)}
+          src={PRODUCTS.toque.image}
+          name={PRODUCTS.toque.name}
+          colour={PRODUCTS.toque.colour}
+          price={formatPrice(PRODUCTS.toque.price)}
           start={6}
           width={560}
-          ratio={1.06}
+          ratio={0.95}
           tone={C.night}
         />
       </div>

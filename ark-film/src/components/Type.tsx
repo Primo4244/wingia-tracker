@@ -125,8 +125,8 @@ export const ProductTile: React.FC<{
       {/* The caption waits until the tile has nearly landed, so it never dips below the safe line. */}
       <div style={{ opacity: tween(frame, start + 16, 14, 0, 1), color: tone }}>
         <div style={{ marginTop: 18, fontFamily: body, fontWeight: 500, fontSize: 32, lineHeight: 1.25 }}>{name}</div>
+        {colour ? <div style={{ fontFamily: body, fontSize: 30, lineHeight: 1.3, opacity: 0.62 }}>{colour}</div> : null}
         {price ? <div style={{ marginTop: 4, fontFamily: body, fontWeight: 600, fontSize: 36, lineHeight: 1.2, fontVariantNumeric: 'tabular-nums' }}>{price}</div> : null}
-        {colour ? <div style={{ fontFamily: body, fontSize: 28, lineHeight: 1.3, opacity: 0.62 }}>{colour}</div> : null}
       </div>
     </div>
   );
