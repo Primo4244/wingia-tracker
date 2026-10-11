@@ -44,11 +44,15 @@ for (const [vpName, viewport] of VIEWPORTS) {
     if (process.env.STORE_PASSWORD) {
       try {
         await page.goto(`${SHOP}/password`, { waitUntil: 'domcontentloaded', timeout: 60000 });
-        const field = page.locator('input[type="password"]').first();
-        if (await field.count()) {
-          await field.fill(process.env.STORE_PASSWORD);
-          await Promise.all([page.waitForLoadState('domcontentloaded'), field.press('Enter')]);
-        }
+        // The field sits in a closed dialog behind "Enter using password": submit its form directly.
+        await Promise.all([
+          page.waitForNavigation({ waitUntil: 'domcontentloaded', timeout: 60000 }),
+          page.evaluate((pw) => {
+            const input = document.querySelector('input[type="password"]');
+            input.value = pw;
+            input.form.submit();
+          }, process.env.STORE_PASSWORD),
+        ]);
       } catch (e) { log.push(`password ${name}: ${e.message}`); }
     }
     const fonts = new Set();
