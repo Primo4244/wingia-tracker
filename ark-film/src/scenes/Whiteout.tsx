@@ -95,6 +95,7 @@ export const Whiteout: React.FC = () => {
           start={6}
           width={560}
           ratio={0.95}
+          zoom={1.4}
           tone={C.night}
         />
       </div>

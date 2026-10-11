@@ -90,10 +90,12 @@ export const ProductTile: React.FC<{
   ratio?: number;
   /** Light position inside the tile, as on the site's pointer light. */
   light?: [number, number];
+  /** Enlarges a packshot that has wide white margins. */
+  zoom?: number;
   /** Text colour of the caption under the tile (night on light scenes). */
   tone?: string;
   style?: React.CSSProperties;
-}> = ({ src, name, price, colour, start, width, ratio = 1.15, light = [50, 35], tone = C.frost, style }) => {
+}> = ({ src, name, price, colour, start, width, ratio = 1.15, light = [50, 35], zoom = 1, tone = C.frost, style }) => {
   const frame = useCurrentFrame();
   const rise = tween(frame, start, 36, 150, 0);
   const settle = tween(frame, start, 48, 1.12, 1);
@@ -118,7 +120,7 @@ export const ProductTile: React.FC<{
             height: '88%',
             objectFit: 'contain',
             mixBlendMode: 'multiply',
-            transform: `scale(${settle})`,
+            transform: `scale(${settle * zoom})`,
           }}
         />
       </div>
