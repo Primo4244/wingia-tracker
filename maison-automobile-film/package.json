@@ -6,7 +6,7 @@
   "scripts": {
     "studio": "remotion studio",
     "audio": "python3 scripts/generate_audio.py",
-    "render": "remotion render LaunchFilm out/raw.mp4 && bash scripts/master.sh out/raw.mp4 out/maison-automobile-launch-film-v1.mp4",
+    "render": "remotion render LaunchFilm out/raw.mp4 && node scripts/master.mjs out/raw.mp4 out/maison-automobile-launch-film.mp4",
     "still": "remotion still LaunchFilm"
   },
   "dependencies": {

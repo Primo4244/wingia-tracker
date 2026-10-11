@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {Glass, GlassLabel} from '../components/Glass';
 import {MaskRise, SlotRoll} from '../components/KineticText';
-import {Vehicle} from '../components/Vehicle';
+import {CarPhoto} from '../components/CarPhoto';
 import {keys, ramp} from '../lib/anim';
 import {C, E, F, wide} from '../lib/theme';
 
@@ -13,10 +13,10 @@ import {C, E, F, wide} from '../lib/theme';
  *  105–150 LES CLÉS.       a key drops in on a pendulum
  */
 
-const LINE_Y = 1010;
-const CARD = 720;
-const ORDER: Array<'sedan' | 'suv' | 'compact'> = ['suv', 'compact', 'sedan', 'suv', 'compact', 'sedan', 'suv', 'compact'];
-const TARGET = 5;
+const LINE_Y = 1190;
+const CARD = 640; // carousel pitch
+const ORDER = ['gle', 'k4', 'cayenne', 'a3', 'gle', 'rav4', 'k4', 'cayenne'] as const; // real fleet photos
+const TARGET = 5; // the chosen car: the RAV4
 
 const stripX = (f: number) => keys(f, [0, 40], [540 - TARGET * CARD + 4600, 540 - TARGET * CARD], E.expoOut);
 
@@ -49,7 +49,7 @@ const Key: React.FC<{lit: number}> = ({lit}) => (
 		<rect x={55} y={120} width={150} height={260} rx={62} fill="none" stroke="#fff" strokeOpacity={0.18} strokeWidth={2} />
 		<circle cx={130} cy={210} r={22} fill="none" stroke="#5a5753" strokeWidth={2} />
 		<circle cx={130} cy={276} r={22} fill="none" stroke="#5a5753" strokeWidth={2} />
-		<line x1={112} y1={336} x2={148} y2={336} stroke={C.copper} strokeWidth={4} strokeLinecap="round" />
+		<line x1={112} y1={336} x2={148} y2={336} stroke={C.carmin} strokeWidth={4} strokeLinecap="round" />
 	</svg>
 );
 
@@ -67,7 +67,7 @@ export const S3Process: React.FC = () => {
 
 	/* ---------- b: coordinate */
 	const flatten = ramp(f, [45, 56], [0, 1], E.snap);
-	const halfH = 175 * (1 - flatten);
+	const halfH = 210 * (1 - flatten);
 	const halfW = 345 + 105 * ramp(f, [45, 58], [0, 1], E.snap);
 	const lineDraw = ramp(f, [52, 62], [0, 1], E.expoOut);
 	const pinPop = ramp(f, [58, 68], [0, 1], E.backOut);
@@ -107,6 +107,10 @@ export const S3Process: React.FC = () => {
 				{/* ------------------------------------------------ strip + bracket */}
 				{(phaseA || phaseB) && (
 					<>
+						{/* the glass plate sits BEHIND the cards: it frames the chosen car without blurring it */}
+						{f >= 30 && (
+							<Glass tone="light" left={540 - gW / 2} top={LINE_Y - gH / 2} width={gW} height={gH} radius={Math.min(52, gH / 2)} shine={shine} opacity={ramp(f, [30, 33])} />
+						)}
 						<div
 							style={{
 								position: 'absolute',
@@ -119,36 +123,17 @@ export const S3Process: React.FC = () => {
 								opacity: stripSquash,
 							}}
 						>
-							{ORDER.map((type, i) => {
+							{ORDER.map((name, i) => {
 								const cx = sx + i * CARD;
-								if (cx < -500 || cx > 1600) return null;
+								if (cx < -400 || cx > 1500) return null;
 								const sel = i === TARGET;
 								return (
-									<div
-										key={i}
-										style={{
-											position: 'absolute',
-											left: cx - 320,
-											top: 60,
-											opacity: sel ? 1 : dim,
-										}}
-									>
-										<Vehicle
-											type={type}
-											paint="graphite"
-											width={640}
-											reflection={false}
-											headlight={sel ? ramp(f, [38, 41]) : 0}
-											sweep={sel ? ramp(f, [36, 60], [-0.2, 1.2]) : -1}
-											blur={Math.min(30, vel / 0.64 / 5)}
-										/>
+									<div key={i} style={{position: 'absolute', left: cx - 280, top: 13, opacity: sel ? 1 : dim}}>
+										<CarPhoto name={name} width={560} height={373} radius={32} shadow blurX={Math.min(26, vel / 9)} />
 									</div>
 								);
 							})}
 						</div>
-						{f >= 30 && (
-							<Glass tone="light" left={540 - gW / 2} top={LINE_Y - gH / 2} width={gW} height={gH} radius={Math.min(52, gH / 2)} shine={shine} opacity={ramp(f, [30, 33])} />
-						)}
 						<svg width={1080} height={1920} style={{position: 'absolute', inset: 0}}>
 								{phaseB && (
 								<g>
@@ -169,7 +154,7 @@ export const S3Process: React.FC = () => {
 										);
 									})}
 									{/* progress — the route already driven */}
-									<line x1={180} x2={180 + 720 * dot} y1={LINE_Y} y2={LINE_Y} stroke={C.copper} strokeWidth={6} opacity={dot > 0 ? 1 : 0} />
+									<line x1={180} x2={180 + 720 * dot} y1={LINE_Y} y2={LINE_Y} stroke={C.carmin} strokeWidth={6} opacity={dot > 0 ? 1 : 0} />
 								</g>
 							)}
 						</svg>
@@ -179,12 +164,12 @@ export const S3Process: React.FC = () => {
 								<div
 									style={{
 										position: 'absolute',
-										left: 260 + 560 * dot - 240,
-										top: LINE_Y - 141,
-										opacity: ramp(f, [56, 66]),
+										left: 330 + 420 * dot - 280,
+										top: LINE_Y - 404,
+										opacity: ramp(f, [50, 60]),
 									}}
 								>
-									<Vehicle type="sedan" paint="graphite" width={480} reflection={false} headlight={1} wheelAngle={dot * 720} sweep={ramp(f, [66, 100], [-0.2, 1.2])} />
+									<CarPhoto name="rav4" width={560} height={373} radius={32} shadow />
 								</div>
 								<GlassLabel top={LINE_Y + 56} align="left" inset={60} tone="light" padding="16px 26px" radius={36} shine={shine} opacity={pinPop}>
 									<div style={{display: 'flex', alignItems: 'center', gap: 14, fontFamily: F.mono, fontWeight: 600, fontSize: 28, letterSpacing: '0.04em', color: C.ink}}>
@@ -212,7 +197,7 @@ export const S3Process: React.FC = () => {
 
 				{/* CHOISISSEZ. */}
 				{phaseA && (
-					<GlassLabel top={540} tone="light" padding="26px 56px" radius={56} shine={shine}>
+					<GlassLabel top={LINE_Y - 540} tone="light" padding="26px 56px" radius={56} shine={shine}>
 						<div style={{...wide(112, 840), fontSize: 112, lineHeight: 1, letterSpacing: '-0.02em', color: C.ink}}>
 							<SlotRoll text="CHOISISSEZ." frame={f} start={3} spin={8} lockEvery={2} />
 						</div>
@@ -221,7 +206,7 @@ export const S3Process: React.FC = () => {
 
 				{/* ON COORDONNE. — rises into its panel */}
 				{phaseB && (
-					<GlassLabel top={600} tone="light" padding="30px 56px" radius={56} shine={shine} opacity={ramp(f, [50, 58])}>
+					<GlassLabel top={LINE_Y - 560} tone="light" padding="30px 56px" radius={56} shine={shine} opacity={ramp(f, [50, 58])}>
 						<div style={{overflow: 'hidden'}}>
 							<div
 								style={{

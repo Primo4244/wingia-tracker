@@ -3,7 +3,6 @@ import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {FocusWords} from '../components/KineticText';
 import {Glass, GlassLabel} from '../components/Glass';
 import {Logo} from '../components/Logo';
-import {Vehicle} from '../components/Vehicle';
 import {ramp} from '../lib/anim';
 import {C, E, F} from '../lib/theme';
 import {BRAND_LINE_Y} from './S4City';
@@ -38,11 +37,6 @@ export const S5Brand: React.FC = () => {
 	return (
 		<AbsoluteFill style={{background: C.ink, overflow: 'hidden'}}>
 			<AbsoluteFill style={{transform: `scale(${push})`}}>
-				{/* a ghost of the car, light-painted once more, very far back */}
-				<div style={{position: 'absolute', left: -310, top: 1210, opacity: 0.11}}>
-					<Vehicle type="sedan" width={1700} draw={ramp(f, [10, 90], [0, 1], E.inOut)} lit={0} reflection={false} />
-				</div>
-
 				{/* the logo floats on a glass panel */}
 				<Glass left={150} top={logoTop - 64} width={780} height={CONTENT_H + 128} radius={64} shine={sheen} opacity={ramp(f, [26, 40])} />
 
@@ -99,7 +93,7 @@ export const S5Brand: React.FC = () => {
 					>
 						maisonautomobile.ca
 					</div>
-					<div style={{width: 420 * urlLine, height: 2, marginTop: 10, background: C.copper}} />
+					<div style={{width: 420 * urlLine, height: 2, marginTop: 10, background: C.carmin}} />
 				</GlassLabel>
 			</AbsoluteFill>
 		</AbsoluteFill>

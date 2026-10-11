@@ -1,7 +1,7 @@
 import {continueRender, delayRender, staticFile} from 'remotion';
 
 const faces: Array<[string, string, FontFaceDescriptors]> = [
-	['Geist', 'fonts/geist-var.woff2', {weight: '100 900'}],
+	['Archivo', 'fonts/archivo-var.woff2', {weight: '100 900', stretch: '62% 125%'}],
 ];
 
 let loaded = false;
