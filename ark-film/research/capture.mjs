@@ -11,7 +11,8 @@ const HANDLES = [
   'arcteryx-alpha-sv-jacket', 'arcteryx-beta-sl-jacket', 'arcteryx-macai-jacket',
   'arcteryx-thorium-hoody', 'arcteryx-down-vest', 'arcteryx-grid-fleece-half-zip', 'arcteryx-bird-head-toque',
 ];
-const PAGES = [
+const ONLY_IMAGES = !process.env.STORE_PASSWORD && process.env.IMAGES_ONLY === '1';
+const PAGES = ONLY_IMAGES ? [] : [
   ['home', '/'],
   ['collection', '/collections/all'],
   ...HANDLES.map((h) => [h, `/products/${h}`]),
@@ -40,6 +41,16 @@ for (const [vpName, viewport] of VIEWPORTS) {
       recordVideo: isHome || name === HANDLES[0] ? { dir: path.join(OUT, 'video-tmp'), size: viewport } : undefined,
     });
     const page = await context.newPage();
+    if (process.env.STORE_PASSWORD) {
+      try {
+        await page.goto(`${SHOP}/password`, { waitUntil: 'domcontentloaded', timeout: 60000 });
+        const field = page.locator('input[type="password"]').first();
+        if (await field.count()) {
+          await field.fill(process.env.STORE_PASSWORD);
+          await Promise.all([page.waitForLoadState('domcontentloaded'), field.press('Enter')]);
+        }
+      } catch (e) { log.push(`password ${name}: ${e.message}`); }
+    }
     const fonts = new Set();
     page.on('response', async (res) => {
       const u = res.url();
@@ -132,19 +143,16 @@ for (const [vpName, viewport] of VIEWPORTS) {
 }
 await browser.close();
 
-// 2. Product images, full resolution, every image of every product.
-for (const h of HANDLES) {
+// 2. Product images, from the Admin API URL list (the CDN is public even behind the password).
+const list = (await fs.readFile(path.resolve('ark-film/research/product-images.txt'), 'utf8')).trim().split('\n');
+for (const [i, line] of list.entries()) {
+  const [handle, url] = line.split(' ');
   try {
-    const r = await fetch(`${SHOP}/products/${h}.json`);
-    const { product } = await r.json();
-    await save(`products/${h}/product.json`, JSON.stringify(product, null, 2));
-    for (const [i, img] of product.images.entries()) {
-      const u = new URL(img.src);
-      const ext = path.extname(u.pathname) || '.png';
-      const ir = await fetch(img.src);
-      await save(`products/${h}/${String(i + 1).padStart(2, '0')}${ext}`, Buffer.from(await ir.arrayBuffer()));
-    }
-  } catch (e) { log.push(`product ${h}: ${e.message}`); }
+    const name = path.basename(new URL(url).pathname);
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    await save(`products/${handle}/${String(i + 1).padStart(2, '0')}-${name}`, Buffer.from(await r.arrayBuffer()));
+  } catch (e) { log.push(`image ${url}: ${e.message}`); }
 }
 
 await fs.rm(path.join(OUT, 'video-tmp'), { recursive: true, force: true });

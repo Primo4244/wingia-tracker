@@ -1,7 +1,0 @@
-product arcteryx-alpha-sv-jacket: Unexpected end of JSON input
-product arcteryx-beta-sl-jacket: Unexpected end of JSON input
-product arcteryx-macai-jacket: Unexpected end of JSON input
-product arcteryx-thorium-hoody: Unexpected end of JSON input
-product arcteryx-down-vest: Unexpected end of JSON input
-product arcteryx-grid-fleece-half-zip: Unexpected end of JSON input
-product arcteryx-bird-head-toque: Unexpected end of JSON input

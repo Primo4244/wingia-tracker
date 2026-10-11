@@ -5,8 +5,13 @@ on:
     branches: [claude/focused-davinci-xw9kij]
     paths:
       - ark-film/research/capture.mjs
+      - ark-film/research/product-images.txt
       - .github/workflows/ark-capture.yml
   workflow_dispatch:
+    inputs:
+      password:
+        description: Storefront password
+        required: false
 
 permissions:
   contents: write
@@ -25,8 +30,11 @@ jobs:
           cd ark-film/research && npm init -y >/dev/null && npm i --no-save playwright@1.56.1
           npx playwright install --with-deps chromium
       - name: Capture
-        run: node ark-film/research/capture.mjs || true
+        run: |
+          if [ -n "$STORE_PASSWORD" ]; then echo "::add-mask::$STORE_PASSWORD"; else export IMAGES_ONLY=1; fi
+          node ark-film/research/capture.mjs || true
         env:
+          STORE_PASSWORD: ${{ github.event.inputs.password }}
           NODE_OPTIONS: --max-old-space-size=4096
       - name: Commit results
         run: |
