@@ -106,7 +106,7 @@ export const S1Hook: React.FC = () => {
 			{/* ------------------------------------------------------- the car */}
 			{frame >= PASS[0] && frame <= PASS[1] && (
 				<div style={{position: 'absolute', left, top: 0}}>
-					<CarPhoto name="gle-portrait" width={1080} height={1920} blurX={Math.min(28, vel / 5)} />
+					<CarPhoto name="pass" at={PASS[0]} width={1080} height={1920} blurX={Math.min(28, vel / 5)} />
 				</div>
 			)}
 		</AbsoluteFill>

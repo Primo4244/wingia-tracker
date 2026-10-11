@@ -13,6 +13,7 @@ npm run audio    # régénère musique + sound design (python3 + numpy)
 npm run studio   # Remotion Studio
 npm run render   # rendu + mastering loudness → out/maison-automobile-launch-film.mp4
 python scripts/prepare_cars.py <dossier des photos du site> public/cars   # photos de la flotte (voir plus bas)
+node scripts/prepare_clips.mjs   # convertit les vidéos de incoming/ en clips (voir « Clips vidéo »)
 ```
 
 - Le mastering (`scripts/master.mjs`) est un script Node, sans bash. Il appelle `ffmpeg` : s'il n'est pas dans le PATH, définir `FFMPEG=/chemin/vers/ffmpeg`.
@@ -46,12 +47,23 @@ Photos de `maisonautomobile.ca` (pages `/vehicules/<modèle>`), fournies par le 
 
 | Fichier | Source | Utilisation |
 |---|---|---|
-| `gle-portrait` | `mercedes-gle-1` | scène 1 : la voiture traverse l'écran |
-| `a3-night` | `audi-a3-1` | scène 2 : « la bonne voiture » |
+| `pass` | `mercedes-gle-1` | scène 1 : la voiture traverse l'écran |
+| `night` | `audi-a3-1` | scène 2 : « la bonne voiture » |
 | `k4`, `a3`, `rav4`, `gle`, `cayenne` | `kia-k4-3`, `audi-a3-2`, `toyota-rav4-1`, `mercedes-gle-1`, `porsche-cayenne-2` | scène 2 : la flotte, scène 3 : le carrousel |
-| `k4-portrait` | `kia-k4-4` (3213×5712) | scène 2 : gros plan « Sélectionnée / préparée » |
+| `macro` | `kia-k4-4` (3213×5712) | scène 2 : gros plan « Sélectionnée / préparée » |
 
 Les zones à flouter sont en coordonnées de la photo d'origine : **les revérifier à l'œil dès qu'une photo est remplacée.**
+
+## Clips vidéo (plans filmés)
+
+Chaque plan est un **emplacement** : `k4`, `a3`, `rav4`, `gle`, `cayenne` (cartes de la flotte), `night` (« la bonne voiture »), `macro` (gros plan), `pass` (passage d'ouverture). Un emplacement utilise son **clip** s'il existe, sinon sa **photo** : on peut donc remplacer les photos une par une.
+
+1. Déposer les fichiers bruts dans `incoming/` (ignoré par git), nommés d'après l'emplacement : `rav4.mov`, `macro.mp4`…
+2. `node scripts/prepare_clips.mjs` : conversion en H.264 30 i/s (1920 de large pour l'horizontal, 2160 pour `macro`, 1080 pour `pass`), HDR ramené en SDR, puis réécriture de `src/lib/clips.generated.ts`.
+3. Régler le moment utile et la vitesse de chaque clip dans `src/lib/fleet.ts` (`CLIP_IN`, `CLIP_RATE`).
+4. Pour revenir à la photo d'un emplacement : supprimer `public/cars/clips/<emplacement>.mp4` et relancer le script.
+
+Les logos se masquent **sur la voiture** (ruban noir mat), pas à l'image. `CLIP_SPOTS` (`fleet.ts`) permet de flouter des zones, mais seulement sur un plan à caméra fixe. Consignes complètes : `PLAN-DE-TOURNAGE.md`.
 
 ---
 

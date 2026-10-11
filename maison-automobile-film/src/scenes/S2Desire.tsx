@@ -55,7 +55,7 @@ const Reveal: React.FC<{f: number}> = ({f}) => {
 					clipPath: `inset(${(1 - open) * 50}% 0 ${(1 - open) * 50}% 0 round 40px)`,
 				}}
 			>
-				<CarPhoto name="a3-night" width={CARD_W} height={CARD_H} radius={40} scale={1.04 + 0.04 * (1 - open)} fx={30} fy={50} />
+				<CarPhoto name="night" at={0} width={CARD_W} height={CARD_H} radius={40} scale={1.04 + 0.04 * (1 - open)} fx={30} fy={50} />
 			</div>
 			<div
 				style={{
@@ -119,6 +119,7 @@ const Fleet: React.FC<{f: number}> = ({f}) => {
 						<div key={car.photo} style={{position: 'absolute', left: 40 + x, top: 570}}>
 							<CarPhoto
 								name={car.photo}
+								at={start}
 								width={CARD_W}
 								height={CARD_H}
 								radius={40}
@@ -192,7 +193,7 @@ const Macro: React.FC<{f: number}> = ({f}) => {
 					transform: `translate(${((50 - fx) / 100) * W}px, ${((50 - fy) / 100) * H}px) scale(${zoom})`,
 				}}
 			>
-				<CarPhoto name="k4-portrait" width={W} height={H} />
+				<CarPhoto name="macro" at={MACRO_FROM} width={W} height={H} />
 			</div>
 
 			{/* darken top and bottom so the glass copy keeps its contrast */}

@@ -53,15 +53,15 @@ PHOTOS = {
         ("disc", 300, 792, 32),               # left wheel crest
         ("disc", 708, 828, 36),               # right wheel crest
     ], None, 1800),
-    "a3-night": ("audi-a3-1.jpg", [
+    "night": ("audi-a3-1.jpg", [
         ("box", 328, 618, 492, 702),          # Audi rings
     ], None, 1800),
-    "k4-portrait": ("kia-k4-4.jpg", [
+    "macro": ("kia-k4-4.jpg", [
         ("box", 2380, 3340, 2660, 3470),      # Kia logo on the grille
         ("disc", 884, 3867, 44),              # front wheel centre cap
         ("disc", 128, 3280, 30),              # rear wheel centre cap
     ], None, 2160),                           # exact 9:16 frame, kept near full resolution for the macro push
-    "gle-portrait": ("mercedes-gle-1.jpg", [
+    "pass": ("mercedes-gle-1.jpg", [
         ("box", 425, 1295, 585, 1450),
         ("box", 495, 1215, 580, 1280),
         ("box", 650, 1338, 805, 1392),

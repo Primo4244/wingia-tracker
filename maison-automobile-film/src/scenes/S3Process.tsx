@@ -129,7 +129,7 @@ export const S3Process: React.FC = () => {
 								const sel = i === TARGET;
 								return (
 									<div key={i} style={{position: 'absolute', left: cx - 280, top: 13, opacity: sel ? 1 : dim}}>
-										<CarPhoto name={name} width={560} height={373} radius={32} shadow blurX={Math.min(26, vel / 9)} />
+										<CarPhoto name={name} still width={560} height={373} radius={32} shadow blurX={Math.min(26, vel / 9)} />
 									</div>
 								);
 							})}
@@ -169,7 +169,7 @@ export const S3Process: React.FC = () => {
 										opacity: ramp(f, [50, 60]),
 									}}
 								>
-									<CarPhoto name="rav4" width={560} height={373} radius={32} shadow />
+									<CarPhoto name="rav4" still width={560} height={373} radius={32} shadow />
 								</div>
 								<GlassLabel top={LINE_Y + 56} align="left" inset={60} tone="light" padding="16px 26px" radius={36} shine={shine} opacity={pinPop}>
 									<div style={{display: 'flex', alignItems: 'center', gap: 14, fontFamily: F.mono, fontWeight: 600, fontSize: 28, letterSpacing: '0.04em', color: C.ink}}>
