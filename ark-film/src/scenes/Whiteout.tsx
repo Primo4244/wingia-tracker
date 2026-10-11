@@ -5,6 +5,7 @@ import { Ridge } from '../components/Ridge';
 import { Snow } from '../components/Snow';
 import { displayStyle, ProductTile, Reveal, textStyle } from '../components/Type';
 import { progress, tween } from '../lib/motion';
+import { PRODUCTS, formatPrice } from '../data/products';
 import { C, SAFE } from '../theme';
 
 export const WHITEOUT_FRAMES = 90;
@@ -85,10 +86,11 @@ export const Whiteout: React.FC = () => {
         <p style={{ ...textStyle, fontSize: 48, lineHeight: 1.3 }}>When the horizon disappears, the mid layer keeps you moving.</p>
       </Reveal>
 
-      <div style={{ position: 'absolute', left: (1080 - 560) / 2, top: 780, transform: `translateY(${(6 - 12 * p) * 6}px)` }}>
+      <div style={{ position: 'absolute', left: (1080 - 560) / 2, top: 740, transform: `translateY(${(6 - 12 * p) * 6}px)` }}>
         <ProductTile
-          src="products/grid-fleece.png"
-          name="Arc'teryx Grid Fleece Half-Zip"
+          src={PRODUCTS.gridFleece.image}
+          name={PRODUCTS.gridFleece.name}
+          price={formatPrice(PRODUCTS.gridFleece.price)}
           start={6}
           width={560}
           ratio={1.06}

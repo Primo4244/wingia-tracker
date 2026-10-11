@@ -4,6 +4,7 @@ import { Contours } from '../components/Atmosphere';
 import { Snow } from '../components/Snow';
 import { displayStyle, headingStyle, MaskLine, ProductTile, Reveal, textStyle } from '../components/Type';
 import { progress } from '../lib/motion';
+import { PRODUCTS, formatPrice } from '../data/products';
 import { C, SAFE } from '../theme';
 
 export const DEEP_COLD_FRAMES = 75;
@@ -90,8 +91,9 @@ export const DeepCold: React.FC = () => {
 
       <div style={{ position: 'absolute', left: 480, top: 840, transform: `translateY(${(8 - 16 * p) * 6}px)` }}>
         <ProductTile
-          src="products/macai.png"
-          name="Arc'teryx Macai Jacket"
+          src={PRODUCTS.macai.image}
+          name={PRODUCTS.macai.name}
+          price={formatPrice(PRODUCTS.macai.price)}
           start={4}
           width={450}
           ratio={1.12}

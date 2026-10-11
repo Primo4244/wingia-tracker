@@ -1,10 +1,11 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame } from 'remotion';
+import { AbsoluteFill, Img, staticFile, useCurrentFrame } from 'remotion';
 import { Fog, Streaks } from '../components/Atmosphere';
 import { Ridge } from '../components/Ridge';
 import { Snow } from '../components/Snow';
 import { displayStyle, headingStyle, ProductTile, Reveal, textStyle } from '../components/Type';
 import { progress, tween } from '../lib/motion';
+import { PRODUCTS, formatPrice } from '../data/products';
 import { C, easeInOut, SAFE } from '../theme';
 
 export const WIND_FRAMES = 90;
@@ -30,15 +31,10 @@ export const Wind: React.FC = () => {
     <AbsoluteFill style={{ backgroundColor: C.night, overflow: 'hidden' }}>
       <AbsoluteFill style={{ clipPath: `inset(${inset(8)} ${inset(5)} ${inset(8)} ${inset(5)})` }}>
         <AbsoluteFill style={{ transform: `scale(${1.28 - 0.22 * open}) translateY(${scene * 3}%)` }}>
-          <AbsoluteFill style={{ background: 'linear-gradient(180deg, #121A23 0%, #2A3846 40%, #536A7E 70%, #7D93A6 100%)' }} />
-          <Ridge
-            seed={21}
-            base={1300}
-            amp={260}
-            peak={{ x: 0.3, height: 420, spread: 0.24 }}
-            top="#CFDAE3"
-            bottom="#22303D"
-            detail
+          {/* The range: rendered from a procedural heightfield (scripts/make-terrain.py), sky included. */}
+          <Img
+            src={staticFile('terrain/wind-far.png')}
+            style={{ position: 'absolute', left: -210, top: 0, width: 1500, height: 1920, filter: 'contrast(1.1)' }}
           />
           {/* Spindrift: snow torn off the crest by the wind. */}
           <Fog
@@ -106,10 +102,11 @@ export const Wind: React.FC = () => {
         <p style={{ ...textStyle, fontSize: 48, marginTop: 10, color: 'rgb(233 238 242 / 0.88)' }}>The outer layer.</p>
       </Reveal>
 
-      <div style={{ position: 'absolute', left: 360, top: 800, transform: `translateY(${(8 - 14 * scene) * 6}px)` }}>
+      <div style={{ position: 'absolute', left: 360, top: 760, transform: `translateY(${(8 - 14 * scene) * 6}px)` }}>
         <ProductTile
-          src="products/alpha-sv.png"
-          name="Arc'teryx Alpha SV Jacket"
+          src={PRODUCTS.alphaSv.image}
+          name={PRODUCTS.alphaSv.name}
+          price={formatPrice(PRODUCTS.alphaSv.price)}
           start={8}
           width={570}
           ratio={1.0}

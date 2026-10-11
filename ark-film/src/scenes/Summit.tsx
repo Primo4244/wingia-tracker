@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteFill, useCurrentFrame } from 'remotion';
+import { AbsoluteFill, Img, staticFile, useCurrentFrame } from 'remotion';
 import { Fog } from '../components/Atmosphere';
 import { Ridge } from '../components/Ridge';
 import { Snow } from '../components/Snow';
@@ -35,23 +35,10 @@ export const Summit: React.FC = () => {
           transformOrigin: '50% 40%',
         }}
       >
-        <AbsoluteFill style={{ background: `linear-gradient(180deg, #1C2835 0%, #3B5064 24%, #6F8AA1 46%, #A9BCCB 62%, #C6D3DD 100%)` }} />
-        <Ridge
-          seed={5}
-          base={1010}
-          amp={150}
-          top="#8FA4B6"
-          bottom="#7D93A6"
-          style={{ opacity: 0.55 }}
-        />
-        <Ridge
-          seed={3}
-          base={1060}
-          amp={170}
-          peak={{ x: 0.5, height: 430, spread: 0.2 }}
-          top="#EEF3F6"
-          bottom="#6D8396"
-          detail
+        {/* The massif: rendered from a procedural heightfield (scripts/make-terrain.py), sky included. */}
+        <Img
+          src={staticFile('terrain/summit-far.png')}
+          style={{ position: 'absolute', left: -210, top: 0, width: 1500, height: 1920, filter: 'contrast(1.12)' }}
         />
         <Fog
           seed={8}

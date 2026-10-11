@@ -79,26 +79,27 @@ export const Finale: React.FC = () => {
           start={26}
           distance={16}
           duration={16}
-          style={{ marginTop: 40 }}
+          style={{ marginTop: 40, display: 'grid', gap: 18, justifyItems: 'start' }}
         >
+          <p style={{ ...textStyle, fontSize: 44, color: C.frost, fontWeight: 500 }}>Every piece in this film is in the shop.</p>
           <span
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: 18,
-              padding: '26px 40px',
+              padding: '32px 46px',
               background: C.frost,
               color: C.night,
               fontFamily: body,
-              fontWeight: 500,
-              fontSize: 38,
+              fontWeight: 600,
+              fontSize: 46,
               lineHeight: 1,
             }}
           >
-            Dress for the cold
+            Shop the pieces · link in bio
             <svg
-              width="30"
-              height="30"
+              width="36"
+              height="36"
               viewBox="0 0 20 20"
               fill="none"
             >

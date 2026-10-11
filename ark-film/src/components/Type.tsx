@@ -82,6 +82,7 @@ export const textStyle: React.CSSProperties = {
 export const ProductTile: React.FC<{
   src: string;
   name: string;
+  price?: string;
   colour?: string;
   start: number;
   width: number;
@@ -92,7 +93,7 @@ export const ProductTile: React.FC<{
   /** Text colour of the caption under the tile (night on light scenes). */
   tone?: string;
   style?: React.CSSProperties;
-}> = ({ src, name, colour, start, width, ratio = 1.15, light = [50, 35], tone = C.frost, style }) => {
+}> = ({ src, name, price, colour, start, width, ratio = 1.15, light = [50, 35], tone = C.frost, style }) => {
   const frame = useCurrentFrame();
   const rise = tween(frame, start, 36, 150, 0);
   const settle = tween(frame, start, 48, 1.12, 1);
@@ -124,6 +125,7 @@ export const ProductTile: React.FC<{
       {/* The caption waits until the tile has nearly landed, so it never dips below the safe line. */}
       <div style={{ opacity: tween(frame, start + 16, 14, 0, 1), color: tone }}>
         <div style={{ marginTop: 18, fontFamily: body, fontWeight: 500, fontSize: 32, lineHeight: 1.25 }}>{name}</div>
+        {price ? <div style={{ marginTop: 4, fontFamily: body, fontWeight: 600, fontSize: 36, lineHeight: 1.2, fontVariantNumeric: 'tabular-nums' }}>{price}</div> : null}
         {colour ? <div style={{ fontFamily: body, fontSize: 28, lineHeight: 1.3, opacity: 0.62 }}>{colour}</div> : null}
       </div>
     </div>
