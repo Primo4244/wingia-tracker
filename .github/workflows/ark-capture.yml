@@ -1,0 +1,38 @@
+name: ARK site capture
+
+on:
+  push:
+    branches: [claude/focused-davinci-xw9kij]
+    paths:
+      - ark-film/research/capture.mjs
+      - .github/workflows/ark-capture.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright
+        run: |
+          cd ark-film/research && npm init -y >/dev/null && npm i --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Capture
+        run: node ark-film/research/capture.mjs || true
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+      - name: Commit results
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ark-film/research/out
+          git commit -m "ARK capture: site screenshots, scroll videos, product images" || exit 0
+          git pull --rebase origin ${GITHUB_REF_NAME}
+          git push origin HEAD:${GITHUB_REF_NAME}
