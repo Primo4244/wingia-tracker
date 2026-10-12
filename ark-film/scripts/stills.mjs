@@ -12,11 +12,11 @@ const outDir = path.resolve('out/stills', name);
 fs.mkdirSync(outDir, { recursive: true });
 
 const serveUrl = await bundle({ entryPoint: path.resolve('src/index.ts') });
-const composition = await selectComposition({ serveUrl, id: process.env.COMP ?? 'ARK-15', browserExecutable });
+const composition = await selectComposition({ serveUrl, id: process.env.COMP ?? 'ARK-15', browserExecutable, chromiumOptions: { gl: process.env.GL ?? 'swangle' } });
 const files = [];
 for (const f of frames.map(Number)) {
   const output = path.join(outDir, `${String(f).padStart(4, '0')}.png`);
-  await renderStill({ composition, serveUrl, frame: f, output, browserExecutable });
+  await renderStill({ composition, serveUrl, frame: f, output, browserExecutable, chromiumOptions: { gl: process.env.GL ?? 'swangle' } });
   files.push(output);
 }
 // Contact sheet: frames side by side with their frame number burned under each (review only).

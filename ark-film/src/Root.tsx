@@ -2,6 +2,8 @@ import React from 'react';
 import { Composition } from 'remotion';
 import { Ad15, AD15_FRAMES } from './Ad15';
 import { Ad30, AD30_FRAMES } from './Ad30';
+import { GLTest } from './trail/GLTest';
+import { Trail, TRAIL_FRAMES } from './trail/Trail';
 import { loadFonts } from './lib/fonts';
 import { FPS, H, W } from './theme';
 
@@ -21,6 +23,22 @@ export const Root: React.FC = () => (
       id="ARK-30"
       component={Ad30}
       durationInFrames={AD30_FRAMES}
+      fps={FPS}
+      width={W}
+      height={H}
+    />
+    <Composition
+      id="ARK-LINE"
+      component={Trail}
+      durationInFrames={TRAIL_FRAMES}
+      fps={FPS}
+      width={W}
+      height={H}
+    />
+    <Composition
+      id="GL-TEST"
+      component={GLTest}
+      durationInFrames={30}
       fps={FPS}
       width={W}
       height={H}
