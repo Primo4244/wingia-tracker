@@ -8,7 +8,7 @@ import { progress, tween } from '../lib/motion';
 import { PRODUCTS, formatPrice } from '../data/products';
 import { C, SAFE } from '../theme';
 
-export const WHITEOUT_FRAMES = 90;
+export const WHITEOUT_FRAMES = 75;
 
 /**
  * ark-scene "whiteout" (light tone): the fog builds to the middle of the scene (0.1 → 0.9) and

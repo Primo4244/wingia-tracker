@@ -15,9 +15,9 @@ import { C } from './theme';
 export const PLAN_15 = [
   { id: 'summit', from: 0, frames: SUMMIT_FRAMES, Scene: Summit },
   { id: 'wind', from: 90, frames: WIND_FRAMES, Scene: Wind },
-  { id: 'whiteout', from: 180, frames: WHITEOUT_FRAMES, Scene: Whiteout },
-  { id: 'deep-cold', from: 270, frames: DEEP_COLD_FRAMES, Scene: DeepCold },
-  { id: 'finale', from: 345, frames: FINALE_FRAMES, Scene: Finale },
+  { id: 'whiteout', from: 165, frames: WHITEOUT_FRAMES, Scene: Whiteout },
+  { id: 'deep-cold', from: 240, frames: DEEP_COLD_FRAMES, Scene: DeepCold },
+  { id: 'finale', from: 315, frames: FINALE_FRAMES, Scene: Finale },
 ];
 
 export const AD15_FRAMES = 450;
@@ -41,7 +41,7 @@ export const Ad15: React.FC = () => (
       </Sequence>
     ))}
     <Grain />
-    {/* Temporary score, 120 BPM: its hits land on the cuts at 3, 6, 9 and 11.5 s. */}
+    {/* Temporary score, 120 BPM: its hits land on the cuts at 3, 5.5, 8 and 10.5 s. */}
     <Audio
       src={staticFile('audio/temp-15.wav')}
       volume={musicVolume}

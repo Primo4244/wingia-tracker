@@ -8,7 +8,7 @@ import { progress, tween } from '../lib/motion';
 import { PRODUCTS, formatPrice } from '../data/products';
 import { C, easeInOut, SAFE } from '../theme';
 
-export const WIND_FRAMES = 90;
+export const WIND_FRAMES = 75;
 
 /**
  * ark-chapter "Wind": the scene opens from a framed window to full bleed (inset 8% 5% → 0,

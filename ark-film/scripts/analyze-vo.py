@@ -1,16 +1,24 @@
 """Objective read of a voice-over take: pitch, melody per phrase, pace, timbre.
-Usage: analyze-vo.py <take>"""
+Usage: analyze-vo.py <take> [v1|v2] [merge-gap-seconds]  (which script the take reads; v2 by default)"""
 import re, subprocess, sys
 import numpy as np
 
 take = sys.argv[1]
+# Pauses shorter than this stay inside a line (commas, '...'); longer ones separate lines.
+MERGE = float(sys.argv[3]) if len(sys.argv) > 3 else 0.12
 SR = 16000
 raw = subprocess.run(['ffmpeg', '-loglevel', 'error', '-i', take, '-ac', '1', '-ar', str(SR), '-f', 'f32le', '-'], capture_output=True).stdout
 x = np.frombuffer(raw, np.float32)
 
-LINES = [("Jackets and toques, for the cold.", 7), ("The shell, the outer layer, meets the weather first.", 12),
+SCRIPTS = {}
+SCRIPTS['v1'] = [("Jackets and toques, for the cold.", 7), ("The shell, the outer layer, meets the weather first.", 12),
          ("And the last layer, on top.", 7), ("In powder pink.", 4), ("Insulation holds the warmth in.", 8),
          ("Winter here is not a season.", 8), ("Link in bio.", 4)]
+# v2: the brief in voiceover/prompt-chatgpt-15.md. Stressed word for each line, for the check.
+SCRIPTS['v2'] = [("Jackets and toques, for the cold.", 7), ("The shell meets the weather first.", 7),
+                 ("The last layer, on top.", 6), ("Insulation holds the warmth in.", 8),
+                 ("Winter here... is not a season.", 8), ("Link in bio.", 4)]
+LINES = SCRIPTS[sys.argv[2] if len(sys.argv) > 2 else 'v2']
 
 def yin(frame, fmin=75, fmax=450, thr=0.15):
     n = len(frame); tmax = SR // fmin; tmin = SR // fmax
@@ -41,11 +49,12 @@ for a, b in sil:
 if dur - t > 0.05: segs.append([t, dur])
 m = []
 for s_ in segs:
-    if m and s_[0] - m[-1][1] < 0.12: m[-1][1] = s_[1]
+    if m and s_[0] - m[-1][1] < MERGE: m[-1][1] = s_[1]
     else: m.append(s_)
 
 st = lambda hz: 12 * np.log2(hz / 100)
 allv = f0[~np.isnan(f0)]
+print('phrases found', len(m), [(round(a, 2), round(b, 2)) for a, b in m])
 print(f'take {dur:.1f} s · median F0 {np.median(allv):.0f} Hz · range (10-90%) {st(np.percentile(allv,90)) - st(np.percentile(allv,10)):.1f} semitones')
 # Spectral centroid: brightness of the timbre.
 spec = np.abs(np.fft.rfft(x[: len(x) // 2048 * 2048].reshape(-1, 2048) * np.hanning(2048), axis=1))

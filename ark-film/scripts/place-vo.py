@@ -3,7 +3,7 @@
 The take is first sped up very slightly (atempo, pitch kept), then split where it is silent;
 each phrase keeps its own intonation, only the gaps between phrases change. Writes a 48 kHz
 mono WAV the length of the film, the voice normalised to -16 LUFS before the final master.
-Usage: place-vo.py <take> <out.wav> <seconds> <tempo> <start,start,...>
+Usage: place-vo.py <take> <out.wav> <seconds> <tempo> <start,start,...> [merge-gap-seconds]
 A start of "+0.3" means: 0.3 s after the previous phrase ends (two phrases in one shot).
 """
 import re
@@ -11,6 +11,8 @@ import subprocess
 import sys
 
 take, out, seconds, tempo, starts = sys.argv[1], sys.argv[2], float(sys.argv[3]), float(sys.argv[4]), sys.argv[5].split(',')
+# Pauses shorter than this stay inside a phrase (commas, '...'); longer ones separate phrases.
+MERGE = float(sys.argv[6]) if len(sys.argv) > 6 else 0.12
 TMP = out + '.tempo.wav'
 
 subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', take, '-af', f'highpass=f=80,atempo={tempo},aresample=48000', '-ac', '1', TMP], check=True)
@@ -31,7 +33,7 @@ if dur - t > 0.05:
     speech.append([t, dur])
 merged = []
 for seg in speech:
-    if merged and seg[0] - merged[-1][1] < 0.12:
+    if merged and seg[0] - merged[-1][1] < MERGE:
         merged[-1][1] = seg[1]
     else:
         merged.append(seg)
