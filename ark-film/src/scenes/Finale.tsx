@@ -14,7 +14,7 @@ export const FINALE_FRAMES = 135;
  * while "Winter here / is not a season." rise line by line (power2.out), the statement and
  * the action follow, and the ARK wordmark rises at the bottom, fading into the night.
  */
-export const Finale: React.FC = () => {
+export const Finale: React.FC<{ frames?: number }> = () => {
   const frame = useCurrentFrame();
   const p = progress(frame, 0, 45);
 

@@ -34,9 +34,9 @@ const IceWord: React.FC<{ children: string; shift: number }> = ({ children, shif
  * ice drifts inside them (10% → 65% and 85% → 30%), and the insulated piece stands in front of
  * the second line. Contour lines of an invented massif drift behind, very faint.
  */
-export const DeepCold: React.FC = () => {
+export const DeepCold: React.FC<{ frames?: number }> = ({ frames = DEEP_COLD_FRAMES }) => {
   const frame = useCurrentFrame();
-  const p = progress(frame, 0, DEEP_COLD_FRAMES);
+  const p = progress(frame, 0, frames);
 
   return (
     <AbsoluteFill style={{ backgroundColor: C.night, overflow: 'hidden' }}>

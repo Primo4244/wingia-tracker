@@ -15,13 +15,13 @@ export const WIND_FRAMES = 75;
  * scale 1.28 → 1.06), wind streaks cross it faster in the gust, the word slides in from -14%
  * and leans into the wind then rights itself, the shell rises through the scene.
  */
-export const Wind: React.FC = () => {
+export const Wind: React.FC<{ frames?: number }> = ({ frames = WIND_FRAMES }) => {
   const frame = useCurrentFrame();
 
   // The window opens over the first two beats, eased like a scroll.
   const open = tween(frame, 0, 30, 0, 1, easeInOut);
   const inset = (v: number) => `${(v * (1 - open)).toFixed(2)}%`;
-  const scene = progress(frame, 0, WIND_FRAMES);
+  const scene = progress(frame, 0, frames);
 
   // Gust: strong as the scene arrives, then it settles; the word leans with it.
   const gust = Math.exp(-frame / 14);

@@ -15,9 +15,15 @@ export const WHITEOUT_FRAMES = 75;
  * thins again (→ 0.3), the horizon disappears into it, the title rises 30% and fades in over
  * 1.4 s, and the last layer (the pink Bird toque) stands in front of the fog.
  */
-export const Whiteout: React.FC = () => {
+type Piece = 'toque' | 'gridFleece';
+
+export const Whiteout: React.FC<{ frames?: number; piece?: Piece; line?: string }> = ({
+  frames = WHITEOUT_FRAMES,
+  piece = 'toque',
+  line = 'The last layer, on top.',
+}) => {
   const frame = useCurrentFrame();
-  const p = progress(frame, 0, WHITEOUT_FRAMES);
+  const p = progress(frame, 0, frames);
   const fog = p < 0.5 ? interpolate(p, [0, 0.5], [0.1, 0.9]) : interpolate(p, [0.5, 1], [0.9, 0.3]);
   const zoom = 1.18 - 0.18 * p;
 
@@ -83,19 +89,19 @@ export const Whiteout: React.FC = () => {
         distance={32}
         style={{ position: 'absolute', left: SAFE.left, top: 520, width: 800, color: C.night }}
       >
-        <p style={{ ...textStyle, fontSize: 52, lineHeight: 1.3 }}>The last layer, on top.</p>
+        <p style={{ ...textStyle, fontSize: 52, lineHeight: 1.3 }}>{line}</p>
       </Reveal>
 
       <div style={{ position: 'absolute', left: (1080 - 560) / 2, top: 740, transform: `translateY(${(6 - 12 * p) * 6}px)` }}>
         <ProductTile
-          src={PRODUCTS.toque.image}
-          name={PRODUCTS.toque.name}
-          colour={PRODUCTS.toque.colour}
-          price={formatPrice(PRODUCTS.toque.price)}
+          src={PRODUCTS[piece].image}
+          name={PRODUCTS[piece].name}
+          colour={'colour' in PRODUCTS[piece] ? (PRODUCTS[piece] as { colour: string }).colour : undefined}
+          price={formatPrice(PRODUCTS[piece].price)}
           start={6}
           width={560}
-          ratio={0.95}
-          zoom={1.4}
+          ratio={piece === 'toque' ? 0.95 : 1.06}
+          zoom={piece === 'toque' ? 1.4 : 1}
           tone={C.night}
         />
       </div>

@@ -8,8 +8,6 @@ import { easeInOut, C, SAFE, H } from '../theme';
 import { s, tween } from '../lib/motion';
 
 export const SUMMIT_FRAMES = 90;
-/** The scroll-depth exit starts here and runs to the cut. */
-const EXIT = 62;
 
 /**
  * ark-summit: a blue-hour summit in depth planes (sky, far massif, the ARK wordmark, the near
@@ -17,13 +15,15 @@ const EXIT = 62;
  * dawn 2.6 s, ridge lift 2.4 s, letters 1.7 s with 0.11 s stagger from 0.25 s, title lines from
  * 0.95 s. The last beats play the site's scroll depth: the wordmark sinks back behind the ridge.
  */
-export const Summit: React.FC = () => {
+export const Summit: React.FC<{ frames?: number }> = ({ frames = SUMMIT_FRAMES }) => {
   const frame = useCurrentFrame();
+  // The scroll-depth exit runs over the last 28 frames, to the cut.
+  const EXIT = frames - 28;
 
   const dawn = tween(frame, 0, s(2.6), 0, 1);
   const ridgeLift = tween(frame, 0, s(2.4), 60, 0);
   // Virtual scroll for the exit, eased like a hand on a trackpad.
-  const scroll = tween(frame, EXIT, SUMMIT_FRAMES - EXIT, 0, 1, easeInOut);
+  const scroll = tween(frame, EXIT, frames - EXIT, 0, 1, easeInOut);
 
   const letters = 'ARK'.split('');
 

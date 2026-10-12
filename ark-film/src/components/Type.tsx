@@ -94,8 +94,10 @@ export const ProductTile: React.FC<{
   zoom?: number;
   /** Text colour of the caption under the tile (night on light scenes). */
   tone?: string;
+  /** Smaller caption, for grids and rails. */
+  compact?: boolean;
   style?: React.CSSProperties;
-}> = ({ src, name, price, colour, start, width, ratio = 1.15, light = [50, 35], zoom = 1, tone = C.frost, style }) => {
+}> = ({ src, name, price, colour, start, width, ratio = 1.15, light = [50, 35], zoom = 1, tone = C.frost, compact = false, style }) => {
   const frame = useCurrentFrame();
   const rise = tween(frame, start, 36, 150, 0);
   const settle = tween(frame, start, 48, 1.12, 1);
@@ -126,9 +128,9 @@ export const ProductTile: React.FC<{
       </div>
       {/* The caption waits until the tile has nearly landed, so it never dips below the safe line. */}
       <div style={{ opacity: tween(frame, start + 16, 14, 0, 1), color: tone }}>
-        <div style={{ marginTop: 18, fontFamily: body, fontWeight: 500, fontSize: 32, lineHeight: 1.25 }}>{name}</div>
-        {colour ? <div style={{ fontFamily: body, fontSize: 30, lineHeight: 1.3, opacity: 0.62 }}>{colour}</div> : null}
-        {price ? <div style={{ marginTop: 4, fontFamily: body, fontWeight: 600, fontSize: 36, lineHeight: 1.2, fontVariantNumeric: 'tabular-nums' }}>{price}</div> : null}
+        <div style={{ marginTop: compact ? 14 : 18, fontFamily: body, fontWeight: 500, fontSize: compact ? 27 : 32, lineHeight: 1.25 }}>{name}</div>
+        {colour ? <div style={{ fontFamily: body, fontSize: compact ? 26 : 30, lineHeight: 1.3, opacity: 0.62 }}>{colour}</div> : null}
+        {price ? <div style={{ marginTop: 4, fontFamily: body, fontWeight: 600, fontSize: compact ? 30 : 36, lineHeight: 1.2, fontVariantNumeric: 'tabular-nums' }}>{price}</div> : null}
       </div>
     </div>
   );
