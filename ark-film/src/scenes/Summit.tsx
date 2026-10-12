@@ -7,7 +7,9 @@ import { displayStyle, MaskLine, Reveal, textStyle } from '../components/Type';
 import { easeInOut, C, SAFE, H } from '../theme';
 import { s, tween } from '../lib/motion';
 
-export const SUMMIT_FRAMES = 105;
+export const SUMMIT_FRAMES = 90;
+/** The scroll-depth exit starts here and runs to the cut. */
+const EXIT = 62;
 
 /**
  * ark-summit: a blue-hour summit in depth planes (sky, far massif, the ARK wordmark, the near
@@ -21,7 +23,7 @@ export const Summit: React.FC = () => {
   const dawn = tween(frame, 0, s(2.6), 0, 1);
   const ridgeLift = tween(frame, 0, s(2.4), 60, 0);
   // Virtual scroll for the exit, eased like a hand on a trackpad.
-  const scroll = tween(frame, 72, SUMMIT_FRAMES - 72, 0, 1, easeInOut);
+  const scroll = tween(frame, EXIT, SUMMIT_FRAMES - EXIT, 0, 1, easeInOut);
 
   const letters = 'ARK'.split('');
 
@@ -55,7 +57,7 @@ export const Summit: React.FC = () => {
         maxSize={8}
         speed={1.1}
         opacity={0.7}
-        gust={(f) => (f > 72 ? 4 * scroll : 0)}
+        gust={(f) => (f > EXIT ? 4 * scroll : 0)}
       />
 
       {/* The wordmark, placed so its feet are buried behind the near ridge. */}
@@ -108,7 +110,7 @@ export const Summit: React.FC = () => {
         speed={3.2}
         opacity={0.5}
         blur={2}
-        gust={(f) => (f > 72 ? 10 * scroll : 0)}
+        gust={(f) => (f > EXIT ? 10 * scroll : 0)}
       />
 
       {/* Night at the top for the platform UI, night at the bottom under the copy. */}

@@ -7,7 +7,7 @@ import { displayStyle, MaskLine, Reveal, textStyle } from '../components/Type';
 import { progress, tween } from '../lib/motion';
 import { body, C, power2Out, SAFE } from '../theme';
 
-export const FINALE_FRAMES = 90;
+export const FINALE_FRAMES = 105;
 
 /**
  * ark-finale then the footer: the scene settles and darkens (scale 1.16 → 1, shade 0.55 → 1)
