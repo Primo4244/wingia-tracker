@@ -16,7 +16,7 @@ const composition = await selectComposition({ serveUrl, id: process.env.COMP ?? 
 const files = [];
 for (const f of frames.map(Number)) {
   const output = path.join(outDir, `${String(f).padStart(4, '0')}.png`);
-  await renderStill({ composition, serveUrl, frame: f, output, browserExecutable, chromiumOptions: { gl: process.env.GL ?? 'swangle' } });
+  await renderStill({ composition, serveUrl, frame: f, output, browserExecutable, chromiumOptions: { gl: process.env.GL ?? 'swangle' }, onBrowserLog: process.env.DEBUG ? (l) => console.log('[browser]', l.type, l.text.slice(0, 300)) : undefined });
   files.push(output);
 }
 // Contact sheet: frames side by side with their frame number burned under each (review only).
