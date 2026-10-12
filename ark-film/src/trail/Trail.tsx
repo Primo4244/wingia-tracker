@@ -1,7 +1,7 @@
 import { ThreeCanvas } from '@remotion/three';
 import { useThree } from '@react-three/fiber';
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { AbsoluteFill, continueRender, delayRender, interpolate, staticFile, useCurrentFrame } from 'remotion';
+import { AbsoluteFill, Audio, continueRender, delayRender, interpolate, staticFile, useCurrentFrame } from 'remotion';
 import * as THREE from 'three';
 import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import { Grain } from '../components/Atmosphere';
@@ -295,7 +295,7 @@ const Clouds: React.FC<{ line: Line }> = ({ line }) => {
     }));
   }, []);
   // Mist thins as the storm clears near the summit.
-  const mist = interpolate(frame, [0, 250, 330], [1, 0.75, 0.15], { extrapolateRight: 'clamp' });
+  const mist = interpolate(frame, [0, 60, 200, 300], [1, 0.45, 0.25, 0.05], { extrapolateRight: 'clamp' });
   return (
     <group>
       {banks.map((b, i) => (
@@ -392,7 +392,8 @@ const drone = (frame: number, line: Line) => {
   // Out over the void and down the wall, then back to the line: the scale of the drop.
   const out = Math.sin(Math.PI * tween(frame, 150, 80, 0, 1, easeInOut));
   const lift = interpolate(frame, [0, 40, 120, 150, 330, 360], [2.4, 3.6, 5.5, 5, 8, 18], { extrapolateRight: 'clamp' }) - 26 * out;
-  const swing = 5 * Math.sin(frame * 0.04) + 46 * out;
+  // Always beside the line, never through it: a chase, a few metres off the toques.
+  const swing = 6.5 + 2 * Math.sin(frame * 0.04) + 46 * out;
   const pos = here.clone().addScaledVector(dir, -8).addScaledVector(side, swing);
   pos.y = here.y + lift;
   let look = line.at(s + 24 + 30 * out);
@@ -448,7 +449,8 @@ const Scene: React.FC<{ data: WorldData }> = ({ data }) => {
   (camera as THREE.PerspectiveCamera).updateProjectionMatrix();
 
   // The storm: dense fog first, clearing as the line climbs; its colour moves to the warm horizon.
-  const storm = interpolate(frame, [0, 40, 120, 260, 340], [1, 0.5, 0.2, 0.08, 0.03], { extrapolateRight: 'clamp' });
+  // The storm only owns the opening; after the first second and a half the air is clear enough to read the drop.
+  const storm = interpolate(frame, [0, 30, 70, 260, 340], [1, 0.35, 0.1, 0.05, 0.02], { extrapolateRight: 'clamp' });
   const fogColor = new THREE.Color('#c3ccd6').lerp(new THREE.Color('#d9d4cf'), 1 - storm);
   scene.fog = new THREE.FogExp2(fogColor, 0.00012 + storm * 0.012);
   sky.material.uniforms.rayleigh.value = 1.6 - storm * 1.2;
@@ -533,9 +535,10 @@ export const Trail: React.FC = () => {
         height={H}
         camera={{ fov: 70, near: 0.3, far: 30000 }}
         gl={{ antialias: true }}
+        style={{ filter: 'contrast(1.12) saturate(1.12)' }}
         onCreated={({ gl }) => {
           gl.toneMapping = THREE.ACESFilmicToneMapping;
-          gl.toneMappingExposure = 1.0;
+          gl.toneMappingExposure = 1.05;
         }}
       >
         <World />
@@ -603,6 +606,8 @@ export const Trail: React.FC = () => {
         <span style={{ ...displayStyle, fontSize: 150, color: C.frost, letterSpacing: '-0.02em', textShadow: '0 2px 30px rgb(11 16 21 / 0.35)' }}>ARK</span>
       </div>
       <Grain opacity={0.06} />
+      {/* Storm ambience until the music is chosen (scripts/make-wind.py). */}
+      <Audio src={staticFile('audio/wind-line.wav')} />
     </AbsoluteFill>
   );
 };
